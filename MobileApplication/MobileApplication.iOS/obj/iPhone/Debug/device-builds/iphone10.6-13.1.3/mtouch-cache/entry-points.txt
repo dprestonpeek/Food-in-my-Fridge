@@ -1,0 +1,61 @@
+Function=SystemNative_ConvertErrorPlatformToPal
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_ConvertErrorPalToPlatform
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_StrErrorR
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_GetNonCryptographicallySecureRandomBytes
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_OpenDir
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_GetReadDirRBufferSize
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_ReadDirR
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_CloseDir
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_ReadLink
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_Stat2
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_LStat2
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_Symlink
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_CopyFile
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_GetEGid
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_GetEUid
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_Link
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_MkDir
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_Rename
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=SystemNative_Unlink
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=xamarin_timezone_get_local_name
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=xamarin_timezone_get_data
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=xamarin_GetFolderPath
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=xamarin_log
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/mscorlib.dll
+Function=xamarin_find_protocol_wrapper_type
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/Xamarin.iOS.dll
+Function=xamarin_release_block_on_main_thread
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/Xamarin.iOS.dll
+Function=xamarin_get_block_descriptor
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/Xamarin.iOS.dll
+Function=xamarin_IntPtr_objc_msgSend_IntPtr
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/Xamarin.iOS.dll
+Function=xamarin_IntPtr_objc_msgSendSuper_IntPtr
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/Xamarin.iOS.dll
+Function=UIApplicationMain
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/Xamarin.iOS.dll
+Function=xamarin_start_wwan
+	/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.iOS/obj/iPhone/Debug/device-builds/iphone10.6-13.1.3/mtouch-cache/1-Link/System.dll
+Function=mono_pmip

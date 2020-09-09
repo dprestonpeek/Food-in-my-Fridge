@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApplication.Views.CreateAccountPage">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Spacing="10">
+            <Image HorizontalOptions="CenterAndExpand" Source="http://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png"></Image>
+            <Label Text="Create Account" FontSize="28" />
+            <Label Text="Pick a username:" />
+            <Entry Placeholder="Username" x:Name="username"/>
+            <Label Text="Create a password:" />
+            <Entry Placeholder="Password" x:Name="password" IsPassword="True"/>
+            <Button Clicked="CreateAccount" Text="Create Account" />
+            <Frame BackgroundColor="Transparent" BorderColor="Transparent" OutlineColor="Transparent"  HeightRequest="30"/>
+            <Button Clicked="SignIn" Text="Log In Instead" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

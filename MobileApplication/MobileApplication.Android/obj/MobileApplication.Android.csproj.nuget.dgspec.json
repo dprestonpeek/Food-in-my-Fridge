@@ -1,0 +1,144 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.Android/MobileApplication.Android.csproj": {}
+  },
+  "projects": {
+    "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.Android/MobileApplication.Android.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.Android/MobileApplication.Android.csproj",
+        "projectName": "MobileApplication.Android",
+        "projectPath": "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.Android/MobileApplication.Android.csproj",
+        "packagesPath": "/Users/cameron/.nuget/packages/",
+        "outputPath": "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication.Android/obj/",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "/Users/cameron/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "monoandroid81"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "monoandroid81": {
+            "projectReferences": {
+              "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication/MobileApplication.csproj": {
+                "projectPath": "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication/MobileApplication.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "monoandroid81": {
+          "dependencies": {
+            "Xamarin.Android.Support.Design": {
+              "target": "Package",
+              "version": "[28.0.0.3, )"
+            },
+            "Xamarin.Android.Support.v4": {
+              "target": "Package",
+              "version": "[28.0.0.3, )"
+            },
+            "Xamarin.Android.Support.v7.AppCompat": {
+              "target": "Package",
+              "version": "[28.0.0.3, )"
+            },
+            "Xamarin.Android.Support.v7.CardView": {
+              "target": "Package",
+              "version": "[28.0.0.3, )"
+            },
+            "Xamarin.Android.Support.v7.MediaRouter": {
+              "target": "Package",
+              "version": "[28.0.0.3, )"
+            },
+            "Xamarin.Forms": {
+              "target": "Package",
+              "version": "[4.3.0.947036, )"
+            },
+            "ZXing.Net.Mobile": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "ZXing.Net.Mobile.Forms": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            }
+          }
+        }
+      }
+    },
+    "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication/MobileApplication.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication/MobileApplication.csproj",
+        "projectName": "MobileApplication",
+        "projectPath": "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication/MobileApplication.csproj",
+        "packagesPath": "/Users/cameron/.nuget/packages/",
+        "outputPath": "/Users/cameron/Downloads/CS303L-Morgan/MobileApp/MobileApplication/MobileApplication/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/Users/cameron/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "Xamarin.Forms": {
+              "target": "Package",
+              "version": "[4.3.0.947036, )"
+            },
+            "ZXing.Net.Mobile": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "ZXing.Net.Mobile.Forms": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.0.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

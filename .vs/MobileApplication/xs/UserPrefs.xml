@@ -1,0 +1,39 @@
+﻿<Properties StartupConfiguration="{24CE3C36-16B9-426D-AA0C-5961ECF8D88C}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MobileApplication/MobileApplication/Views/MenuPage.xaml.cs">
+    <Files>
+      <File FileName="MobileApplication/MobileApplication/Views/MainPage.xaml" Line="1" Column="1" />
+      <File FileName="MobileApplication/MobileApplication/Views/MainPage.xaml.cs" />
+      <File FileName="MobileApplication/MobileApplication/Views/MenuPage.xaml" />
+      <File FileName="MobileApplication/MobileApplication/Views/MenuPage.xaml.cs" Line="1" Column="1" />
+      <File FileName="MobileApplication/MobileApplication/Views/FrontPage.xaml" />
+      <File FileName="MobileApplication/MobileApplication/Views/FrontPage.xaml.cs" />
+      <File FileName="MobileApplication/MobileApplication/Views/BarcodeScanner.xaml.cs" />
+      <File FileName="MobileApplication/MobileApplication/Views/BarcodeScanner.xaml" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="MobileApplication" expanded="True">
+            <Node name="MobileApplication" expanded="True">
+              <Node name="Views" expanded="True">
+                <Node name="MenuPage.xaml" expanded="True">
+                  <Node name="MenuPage.xaml.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.MobileApplication.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="../../../MobileApplication/MobileApplication/Views/MenuPage.xaml.cs" line="42" offsetX="-1" offsetY="-1" expression="Navigation" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
+  <MonoDevelop.Ide.ItemProperties.MobileApplication.Android PreferredExecutionTarget="Android.Android_Accelerated_Oreo" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

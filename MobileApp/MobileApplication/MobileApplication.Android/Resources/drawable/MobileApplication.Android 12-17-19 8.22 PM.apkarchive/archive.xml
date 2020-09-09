@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Archive>
+  <Name>MobileApplication.Android</Name>
+  <PackageName>com.companyname.MobileApplication</PackageName>
+  <PackageVersionCode>1</PackageVersionCode>
+  <PackageVersionName>1.0</PackageVersionName>
+  <CreationDate>637122289571149726</CreationDate>
+  <SolutionName>MobileApplication</SolutionName>
+  <SolutionPath>C:\Users\dpres\Documents\GitHub\CS303L\MobileApp\MobileApplication.sln</SolutionPath>
+  <Status></Status>
+  <Configuration>
+    <DebugMode>false</DebugMode>
+  </Configuration>
+</Archive>

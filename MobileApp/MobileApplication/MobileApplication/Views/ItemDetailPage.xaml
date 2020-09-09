@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApplication.Views.ItemDetailPage"
+             Title="{Binding Title}">
+    <StackLayout Spacing="20" Padding="15">
+        <Image HorizontalOptions="CenterAndExpand" Source="{Binding Item.ImageUrl}"></Image>
+        <Label Text="Product:" FontSize="Medium" />
+        <Label Text="{Binding Item.ProductName}" FontSize="Small"/>
+        <Label Text="Description:" FontSize="Medium" />
+        <Label Text="{Binding Item.Description}" FontSize="Small"/>
+        <Label Text="UPC:" FontSize="Medium" />
+        <Label Text="{Binding Item.UPC}" FontSize="Small"/>
+        
+        <StackLayout Orientation="Horizontal" >
+            <StackLayout Orientation="Vertical">
+                <Label Text="Quantity: " FontSize="Medium" />
+            </StackLayout>
+            <StackLayout Orientation="Vertical"  HorizontalOptions="Center" VerticalOptions="Center">
+                <Label x:Name="Quantity" Text="{Binding Item.Quantity}" FontSize="Medium"/>
+            </StackLayout>
+        </StackLayout>
+        
+        <Button x:Name="ButtonEditItem" Text="Edit Item"/>
+        <Button x:Name="ButtonDeleteItem" Text="Delete Item" BackgroundColor="DarkGray"/>
+    </StackLayout>
+</ContentPage>

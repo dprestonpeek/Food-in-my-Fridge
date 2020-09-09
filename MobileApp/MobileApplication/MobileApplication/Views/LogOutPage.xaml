@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApplication.Views.LogOutPage">
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <Label Text="Are you sure you want to log out?" FontSize="Large" />
+            <Button x:Name="YesLogout" Text="Yes, Logout"/>
+            <Button x:Name="NoStayLoggedIn" Text="No, Stay Logged In" BackgroundColor="DarkGray"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
