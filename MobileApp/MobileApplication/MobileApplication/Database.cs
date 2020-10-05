@@ -25,7 +25,7 @@ namespace MobileApplication
             client.Headers[HttpRequestHeader.ContentType] = "Content-Type:application/json";
             client.Headers[HttpRequestHeader.Authorization] = "Basic secret-6323";
             dbUrl = "https://f1m5kuz1va.execute-api.us-east-1.amazonaws.com/Stage/";
-            apiKey = "&formatted=y&key=qpzbr92sz831bfdyauu5f6ub1l450k";
+            apiKey = "&formatted=y&key=it5z09owihva4agg6jwnms0w06qihl";
             request = new Request(client);
             products = new Products(client);
         }
@@ -177,16 +177,23 @@ namespace MobileApplication
         public string[] GetProductData(string upcCode)
         {
             string[] productData = new string[5];
-            byte[] raw = client.DownloadData("https://api.barcodelookup.com/v2/products?barcode=" + upcCode + Database.apiKey);
-            string data = Encoding.UTF8.GetString(raw);
-            SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
-            productData[0] = node["products"][0]["barcode_number"];
-            productData[1] = node["products"][0]["product_name"];
-            productData[2] = node["products"][0]["description"];
-            productData[3] = node["products"][0]["images"][0];
-            productData[4] = "1";
+            try
+            {
+                byte[] raw = client.DownloadData("https://api.barcodelookup.com/v2/products?barcode=" + upcCode + Database.apiKey);
+                string data = Encoding.UTF8.GetString(raw);
+                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
+                productData[0] = node["products"][0]["barcode_number"];
+                productData[1] = node["products"][0]["product_name"];
+                productData[2] = node["products"][0]["description"];
+                productData[3] = node["products"][0]["images"][0];
+                productData[4] = "1";
 
-            return productData;
+                return productData;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public string GetLastErrorMessage()
