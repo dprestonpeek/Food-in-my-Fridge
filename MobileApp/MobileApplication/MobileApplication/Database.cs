@@ -60,7 +60,34 @@ namespace MobileApplication
         public bool AddToUserInventory(string username, string upcCode, string productName, string productDesc, string imageUrl, int quantity)
         {
             string url = dbUrl + "adduserinv";
-            string parameters = "{\"username\":\"" + username.ToUpper() + "\",\"scanid\":\"" + upcCode + "\",\"productname\":\"" + productName + "\",\"description\":\"" + productDesc + "\",\"imageurl\":\"" + imageUrl + "\",\"quantity\":\"" + quantity + "\"}";
+            string parameters;
+            if (upcCode == "")
+            {
+                upcCode = "0";
+            }
+            if (productName == "")
+            {
+                return false;
+            }
+            if (productDesc == "")
+            {
+                productDesc = "no description";
+            }
+            else if (productDesc.Length > 255)
+            {
+                productDesc = productDesc.Substring(0, 255);
+            }
+            if (imageUrl == "")
+            {
+                imageUrl = "https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png";
+            }
+
+            parameters = "{\"username\":\"" + username.ToUpper();
+            parameters += "\",\"scanid\":\"" + upcCode;
+            parameters += "\",\"productname\":\"" + productName;
+            parameters += "\",\"description\":\"" + productDesc;
+            parameters += "\",\"imageurl\":\"" + imageUrl;
+            parameters += "\",\"quantity\":\"" + quantity + "\"}";
 
             if (request.Post(url, parameters) != null)
             {
@@ -187,6 +214,9 @@ namespace MobileApplication
                 productData[2] = node["products"][0]["description"];
                 productData[3] = node["products"][0]["images"][0];
                 productData[4] = "1";
+
+                productData[2] = productData[2].Substring(0, 255);
+                productData[3] = productData[3].Replace("http://", "https://");
 
                 return productData;
             }

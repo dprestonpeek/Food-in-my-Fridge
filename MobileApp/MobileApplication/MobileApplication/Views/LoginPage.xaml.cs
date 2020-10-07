@@ -24,7 +24,8 @@ namespace MobileApplication.Views
             {
                 App.Username = username.Text;
                 App.Password = password.Text;
-                Application.Current.MainPage = new MainPage();
+                MainPage appHomePage = new MainPage();
+                Application.Current.MainPage = appHomePage;
             }
         }
 

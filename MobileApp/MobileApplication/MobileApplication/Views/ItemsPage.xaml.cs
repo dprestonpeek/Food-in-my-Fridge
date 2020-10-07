@@ -37,9 +37,9 @@ namespace MobileApplication.Views
             ItemsListView.SelectedItem = null;
         }
 
-        private async void ScanItem_Clicked(object sender, EventArgs e)
+        private async void NewItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new NavigationPage(new BarcodeScanner()));
+            await Navigation.PushAsync(new BarcodeScanner());
         }
 
         protected override void OnAppearing()

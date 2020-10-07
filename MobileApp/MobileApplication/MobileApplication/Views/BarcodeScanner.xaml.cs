@@ -12,22 +12,23 @@ namespace MobileApplication.Views
         public BarcodeScanner()
         {
             InitializeComponent();
-            OpenScannerImmediately();
         }
 
         public async Task OpenBarcodeScanner()
         {
             scanPage = new ZXingScannerPage();
-            scanPage.OnScanResult += (result) => {
+            scanPage.OnScanResult += (result) =>
+            {
                 scanPage.IsScanning = true;
 
-                Device.BeginInvokeOnMainThread(() => {
+                Device.BeginInvokeOnMainThread(() =>
+                {
                     App.ScannedUPC = result.Text;
                     if (new Database().GetItemFromInventory(App.Username, App.ScannedUPC) != null)
                     {
                         App.editingItem = true;
                     }
-                    Navigation.PushModalAsync(new NewItemPage());
+                    Navigation.PushModalAsync(new NewUpcItemPage());
                 });
             };
             await Navigation.PushModalAsync(scanPage);
@@ -45,10 +46,20 @@ namespace MobileApplication.Views
                     {
                         App.editingItem = true;
                     }
-                    Navigation.PushModalAsync(new NewItemPage());
+                    Navigation.PushModalAsync(new NewUpcItemPage());
                 });
             };
             await Navigation.PushModalAsync(scanPage);
+        }
+
+        private void ScanButton_Clicked(object sender, EventArgs e)
+        {
+            OpenScannerImmediately();
+        }
+        
+        private void EnterManually_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new NewItemPage());
         }
     }
 }

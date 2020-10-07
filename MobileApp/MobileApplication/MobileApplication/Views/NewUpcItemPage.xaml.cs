@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 namespace MobileApplication.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NewItemPage : ContentPage
+    public partial class NewUpcItemPage : ContentPage
     {
         public Item Item { get; set; }
         private string[] itemInfo = new string[5] { "", "", "", "", "" };
         Database db;
 
-        public NewItemPage()
+        public NewUpcItemPage()
         {
             InitializeComponent();
             db = new Database();
@@ -30,6 +30,7 @@ namespace MobileApplication.Views
                 else
                 {
                     Title = "New Item";
+                    itemInfo = db.products.GetProductData(App.ScannedUPC);
                 }
             }
             else
@@ -42,11 +43,11 @@ namespace MobileApplication.Views
             }
             Item = new Item
             {
-                UPC = "",
-                ProductName = "",
-                Description = "",
-                ImageUrl = "",
-                Quantity = ""
+                UPC = itemInfo[0],
+                ProductName = itemInfo[1],
+                Description = itemInfo[2],
+                ImageUrl = itemInfo[3],
+                Quantity = itemInfo[4]
             };
 
             BindingContext = this;

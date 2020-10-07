@@ -4,7 +4,7 @@
              x:Class="MobileApplication.Views.FrontPage">
     <ContentPage.Content>
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-            <Image HorizontalOptions="CenterAndExpand" Source="http://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png"></Image>
+            <Image HorizontalOptions="CenterAndExpand" Source="https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png"></Image>
             <Button Clicked="NaviagteToLoginPage" Text="Sign In"/>
             <Button Clicked="NaviagteToCreateAccountPage" Text="Create Account"/>
         </StackLayout>

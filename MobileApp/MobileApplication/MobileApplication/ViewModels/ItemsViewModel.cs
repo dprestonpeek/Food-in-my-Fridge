@@ -76,7 +76,7 @@ namespace MobileApplication.ViewModels
             var deleteOption = new MenuItem()
             {
                 Text = "Delete",
-                Icon = "deleteIcon.png", //Android uses this, for example
+                IconImageSource = "deleteIcon.png", //Android uses this, for example
                 CommandParameter = ((Item)BindingContext).UPC
             };
             deleteOption.Clicked += deleteOption_Clicked;
