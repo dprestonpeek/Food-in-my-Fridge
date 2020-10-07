@@ -8,7 +8,8 @@ namespace MobileApplication.Models
     {
         Inventory,
         About,
-        BarcodeScanner,
+        NewItem,
+        ExamplePage,
         Logout
     }
     public class HomeMenuItem
