@@ -213,16 +213,26 @@ namespace MobileApplication
                 productData[1] = node["products"][0]["product_name"];
                 productData[2] = node["products"][0]["description"];
                 productData[3] = node["products"][0]["images"][0];
+                //quantity
                 productData[4] = "1";
 
-                productData[2] = productData[2].Substring(0, 255);
+                if (productData[2].Length > 255)
+                {
+                    productData[2] = productData[2].Substring(0, 255);
+                }
                 productData[3] = productData[3].Replace("http://", "https://");
 
                 return productData;
             }
             catch
             {
-                return null;
+                productData[0] = "Barcode not recognized";
+                productData[1] = "";
+                productData[2] = "";
+                productData[3] = "";
+                //quantity
+                productData[4] = "1";
+                return productData;
             }
         }
 
