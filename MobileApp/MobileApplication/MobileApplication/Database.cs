@@ -272,7 +272,11 @@ namespace MobileApplication
             }
             catch
             {
-                recipeData = null;
+                recipeData[0] = "";
+                recipeData[1] = "";
+                recipeData[2] = "";
+                recipeData[3] = "";
+                recipeData[4] = "";
                 return recipeData;
             }
         }
