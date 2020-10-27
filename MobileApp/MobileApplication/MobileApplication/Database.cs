@@ -236,6 +236,47 @@ namespace MobileApplication
             }
         }
 
+        public string[] GetRecipes(string keyword)
+        {
+            string[] excludedString = new string[0];
+            return GetRecipes(keyword, excludedString);
+        }
+
+        public string[] GetRecipes(string keyword, string[] excluded)
+        {
+            string[] recipes = new string[10];
+            string[] recipeData = new string[5];
+            string excludedString = "";
+            foreach (string word in excluded)
+            {
+                excludedString += "&excluded=" + word;
+            }
+            try
+            {
+                byte[] raw = client.DownloadData("https://api.edamam.com/search?q=" + keyword + excludedString + "&app_id=b7f31416&app_key=aa8d1187795346e20ef1b7e187c3a362");
+                string data = Encoding.UTF8.GetString(raw);
+                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
+                recipeData[0] = node["hits"][0]["recipe"]["label"];
+                recipeData[1] = node["hits"][0]["recipe"]["source"];
+                recipeData[2] = node["hits"][0]["recipe"]["image"];
+                recipeData[3] = node["hits"][0]["recipe"]["calories"];
+                recipeData[4] = node["hits"][0]["recipe"]["url"];
+
+                if (recipeData[2].Length > 255)
+                {
+                    recipeData[2] = recipeData[2].Substring(0, 255);
+                }
+                recipeData[4] = recipeData[4].Replace("http://", "https://");
+
+                return recipeData;
+            }
+            catch
+            {
+                recipeData = null;
+                return recipeData;
+            }
+        }
+
         public string GetLastErrorMessage()
         {
             return lastError;
