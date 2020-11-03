@@ -19,8 +19,8 @@ namespace MobileApplication.Views
         public NewItemPage()
         {
             InitializeComponent();
-            db = new Database();
-            if (App.ScannedUPC != "")
+            db = new Database();            //Instantiate the database item to interact with the database
+            if (App.ScannedUPC != "")       
             {
                 if (App.editingItem)
                 {
@@ -64,6 +64,8 @@ namespace MobileApplication.Views
                 db.RemoveFromUserInventory(App.Username, App.ScannedUPC);
                 App.editingItem = false;
             }
+
+            //returns false if the add fails for some reason
             if (!db.AddToUserInventory(App.Username, Item.UPC, Item.ProductName, Item.Description, Item.ImageUrl, int.Parse(Quantity.Text)))
             {
                 await DisplayAlert("Error! Item not added to inventory", itemInfo[1], "OK");
@@ -73,7 +75,6 @@ namespace MobileApplication.Views
 
         async void Cancel_Clicked(object sender, EventArgs e)
         {
-            //App.Inventory = new string[4];
             App.editingItem = false;
             App.ScannedUPC = "";
             await Navigation.PopModalAsync();

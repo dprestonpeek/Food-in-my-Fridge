@@ -32,6 +32,10 @@ namespace MobileApplication
 
         public bool UserLogin(string username, string password)
         {
+            if (username == null || password == null)
+            {
+                return false;
+            }
             string url = dbUrl + "login";
             string parameters = "{\"username\":\"" + username.ToUpper() + "\",\"password\":\"" + password + "\",}";
             if (request.Post(url, parameters) != null)
