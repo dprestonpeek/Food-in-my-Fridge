@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Food In My Fridge</AssemblyName>
     <ApplicationIcon>foodinmyfridge_orig_gEy_icon.ico</ApplicationIcon>
+    <RootNamespace>Food In My Fridge</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

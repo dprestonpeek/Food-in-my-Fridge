@@ -5,27 +5,26 @@
     <ContentPage.Content>
         <AbsoluteLayout>
             <StackLayout
-        x:Name="mainLayout"
-        AbsoluteLayout.LayoutBounds="0,0,1,1"
-                 AbsoluteLayout.LayoutFlags="All" >
+                x:Name="mainLayout"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All" >
                 <Label x:Name="loadText" Text="Loading..."
                HorizontalOptions="Center"
                VerticalOptions="CenterAndExpand" />
             </StackLayout>
             <StackLayout
-        x:Name="aiLayout"
-        IsVisible="True"
-        AbsoluteLayout.LayoutBounds="0,0,1,1"
-        AbsoluteLayout.LayoutFlags="All"
-        BackgroundColor="Gray" Opacity="0.5">
+                x:Name="aiLayout"
+                IsVisible="True"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                BackgroundColor="Gray" Opacity="0.5">
                 <ActivityIndicator
-            x:Name="ai"
-            IsRunning="True"
-            HorizontalOptions="CenterAndExpand"
-            VerticalOptions="CenterAndExpand"
-            Color="Black"/>
+                    x:Name="ai"
+                    IsRunning="True"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    Color="Black"/>
             </StackLayout>
-
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

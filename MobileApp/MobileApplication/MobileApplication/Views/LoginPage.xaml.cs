@@ -22,39 +22,43 @@ namespace MobileApplication.Views
 
         void SignIn(object sender, EventArgs e)
         {
-            OpenSplashScreen();
+            LoginWithSplashScreen();
         }
 
         void CreateAccount(object sender, EventArgs e)
         {
             Application.Current.MainPage = new CreateAccountPage();
         }
-        
-        private async void OpenSplashScreen()
-        {
-            loadingPage = new Loading(Loading.LoadType.LogginIn, username.Text, password.Text);
 
+        private bool VerifyLogin()
+        {
+            if (new Database().UserLogin(username.Text, password.Text))
+            {
+                App.Username = username.Text;
+                App.Password = password.Text;
+                return true;
+            }
+            loadingPage.IsLoading = false;
+            return false;
+        }
+
+        private async void LoginWithSplashScreen()
+        {
+            loadingPage = new Loading(Loading.LoadType.LogginIn);
+            await Navigation.PushModalAsync(loadingPage);
             loadingPage.IsLoading = true;
 
-            Device.BeginInvokeOnMainThread(() => {
-                if (new Database().UserLogin(username.Text, password.Text))
+            await Task.Run(() =>
+            {
+                if (VerifyLogin())
                 {
-                    App.Username = username.Text;
-                    App.Password = password.Text;
                     loadingPage.success = true;
                 }
                 else
                 {
                     loadingPage.success = false;
                 }
-                loadingPage.IsLoading = false;
             });
-
-            if (loadingPage.IsLoading)
-            {
-                await Navigation.PushModalAsync(loadingPage);
-                while (loadingPage.IsLoading) { }
-            }
 
             if (loadingPage.success)
             {
@@ -66,5 +70,7 @@ namespace MobileApplication.Views
                 await DisplayAlert("Username/Password not found", "The username and password combination you entered does not exist.", "OK");
             }
         }
+
+
     }
 }

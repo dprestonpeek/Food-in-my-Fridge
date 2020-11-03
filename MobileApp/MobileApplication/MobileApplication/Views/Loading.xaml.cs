@@ -13,38 +13,34 @@ namespace MobileApplication.Views
 	public partial class Loading : ContentPage
     {
         public bool IsLoading { get; set; }
+        public bool success = false;
 
         public enum LoadType { LogginIn, SavingInventory}
         LoadType loadType;
-        public bool success = false;
-        string username = "";
-        string password = "";
 
         public Loading(LoadType theLoadType)
         {
             InitializeComponent();
             loadType = theLoadType;
+            ChangeLoadingScreen();
         }
 
-        public Loading(LoadType theLoadType, string username, string password)
-		{
-            InitializeComponent ();
-            loadText.Text = "Checking your credentials...";
-            loadType = theLoadType;
-            this.username = username;
-            this.password = password;
-        }
-
-        string DetermineLoadFunction()
+        public void ChangeLoadingScreen()
         {
             switch(loadType)
             {
                 case LoadType.LogginIn:
+                    loadText.Text = "\n\n\n\nChecking your credentials...";
                     break;
                 case LoadType.SavingInventory:
-                    return "Saving your inventory...";
+                    loadText.Text = "\n\n\n\nSaving your inventory...";
+                    break;
             }
-            return "Loading...";
+        }
+        
+        public void DoneLoading()
+        {
+            Application.Current.MainPage = new MainPage();
         }
 	}
 }
