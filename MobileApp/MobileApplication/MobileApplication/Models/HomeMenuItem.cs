@@ -9,7 +9,6 @@ namespace MobileApplication.Models
         Inventory,
         About,
         NewItem,
-        ExamplePage,
         RecipeSearch,
         Logout
     }

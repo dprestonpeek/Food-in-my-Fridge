@@ -67,7 +67,12 @@ namespace MobileApplication
             string parameters;
             if (upcCode == "")
             {
-                upcCode = "0";
+                int productId = 0;
+                while (ItemExistsInInventory(username, productId.ToString()))
+                {
+                    productId++;
+                }
+                upcCode = productId.ToString();
             }
             if (productName == "")
             {
@@ -98,6 +103,15 @@ namespace MobileApplication
                 return true;
             }
             errorMessage = request.GetLastErrorMessage();
+            return false;
+        }
+
+        public bool ItemExistsInInventory(string username, string upcCode)
+        {
+            if (GetItemFromInventory(username, upcCode) != null)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -175,8 +189,10 @@ namespace MobileApplication
         public string label;
         public string source;
         public string image;
-        public int calories;
+        public string calories;
         public string url { get; private set; }
+        public int time;
+        public int servings;
         public List<Ingredient> ingredients { get; private set; }
 
         public Recipe()
@@ -184,12 +200,26 @@ namespace MobileApplication
             label = "";
             source = "";
             image = "";
-            calories = 0;
+            calories = "";
             url = "";
+            time = 0;
+            servings = 0;
             ingredients = new List<Ingredient>();
         }
 
-        public void ChangeURL(string url)
+        public Recipe(string label, string source, string calories)
+        {
+            this.label = label;
+            this.source = source;
+            this.calories = calories;
+        }
+
+        public void AddImage(string image)
+        {
+            this.image = image.Replace("http://", "https://");
+        }
+
+        public void AddURL(string url)
         {
             this.url = url.Replace("http://", "https://");
         }
@@ -202,6 +232,16 @@ namespace MobileApplication
             }
 
             ingredients.Add(newIngredient);
+        }
+
+        public void AddTime(int time)
+        {
+            this.time = time;
+        }
+
+        public void AddServings(int servings)
+        {
+            this.servings = servings;
         }
     }
 
@@ -292,53 +332,65 @@ namespace MobileApplication
             }
         }
 
-        public Recipe GetRecipe(string keyword)
+        public List<Recipe> GetRecipes(string keyword)
         {
             string[] excludedString = new string[0];
-            return GetRecipe(keyword, excludedString);
+            return GetRecipes(keyword, excludedString);
         }
 
-        public Recipe GetRecipe(string keyword, string[] excluded)
+        public List<Recipe> GetRecipes(string keyword, string[] excluded)
         {
+            List<Recipe> recipes = new List<Recipe>();
             string excludedString = "";
+
             foreach (string word in excluded)
             {
                 excludedString += "&excluded=" + word;
             }
+
             try
             {
                 byte[] raw = client.DownloadData("https://api.edamam.com/search?q=" + keyword + excludedString + "&app_id=b7f31416&app_key=aa8d1187795346e20ef1b7e187c3a362");
                 string data = Encoding.UTF8.GetString(raw);
                 SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
-                Recipe recipe = new Recipe();
-                recipe.label = node["hits"][0]["recipe"]["label"];
-                recipe.source = node["hits"][0]["recipe"]["source"];
-                recipe.image = node["hits"][0]["recipe"]["image"];
-                recipe.calories = node["hits"][0]["recipe"]["calories"];
-                recipe.ChangeURL(node["hits"][0]["recipe"]["url"]);
 
-                int i = -1;
-                while (true)
+                for (int hit = 0; hit < 10; hit++)
                 {
-                    if (node["hits"][0]["recipe"]["ingredients"][i + 1]["text"] != null)
+                    Recipe recipe = new Recipe(
+                        node["hits"][hit]["recipe"]["label"],
+                        node["hits"][hit]["recipe"]["source"],
+                        node["hits"][hit]["recipe"]["calories"]);
+                    recipe.AddImage(node["hits"][hit]["recipe"]["image"]);
+                    recipe.AddURL(node["hits"][hit]["recipe"]["url"]);
+                    recipe.AddTime(node["hits"][hit]["recipe"]["totalTime"]);
+                    recipe.AddServings(node["hits"][hit]["recipe"]["yield"]);
+
+                    int i = -1;
+                    while (true)
                     {
-                        recipe.AddIngredient(new Ingredient(
-                            node["hits"][0]["recipe"]["ingredients"][i + 1]["text"],
-                            node["hits"][0]["recipe"]["ingredients"][i + 1]["weight"],
-                            node["hits"][0]["recipe"]["ingredients"][i + 1]["image"]
-                            ));
+                        if (node["hits"][0]["recipe"]["ingredients"][i + 1]["text"] != null)
+                        {
+                            recipe.AddIngredient(new Ingredient(
+                                node["hits"][hit]["recipe"]["ingredients"][i + 1]["text"],
+                                node["hits"][hit]["recipe"]["ingredients"][i + 1]["weight"],
+                                node["hits"][hit]["recipe"]["ingredients"][i + 1]["image"]
+                                ));
+                        }
+                        else
+                        {
+                            recipes.Add(recipe);
+                            break;
+                        }
+                        i++;
                     }
-                    else
-                    {
-                        break;
-                    }
-                    i++;
                 }
-                return recipe;
+                return recipes;
             }
             catch
             {
-                return new Recipe();
+                List<Recipe> theRecipes = new List<Recipe>();
+                theRecipes.Add(new Recipe());
+                return theRecipes;
             }
         }
 
