@@ -37,6 +37,9 @@ namespace MobileApplication.Views
                     case (int)MenuItemType.ExamplePage:
                         MenuPages.Add(id, new NavigationPage(new ExamplePage()));
                         break;
+                    case (int)MenuItemType.RecipeSearch:
+                        MenuPages.Add(id, new NavigationPage(new Recipes()));
+                        break;
                     case (int)MenuItemType.Logout:
                         MenuPages.Add(id, new NavigationPage(new LogOutPage()));
                         break;

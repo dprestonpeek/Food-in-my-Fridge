@@ -249,7 +249,7 @@ namespace MobileApplication
         public string[] GetRecipes(string keyword, string[] excluded)
         {
             string[] recipes = new string[10];
-            string[] recipeData = new string[5];
+            string[] recipeData = new string[10];
             string excludedString = "";
             foreach (string word in excluded)
             {
@@ -265,6 +265,7 @@ namespace MobileApplication
                 recipeData[2] = node["hits"][0]["recipe"]["image"];
                 recipeData[3] = node["hits"][0]["recipe"]["calories"];
                 recipeData[4] = node["hits"][0]["recipe"]["url"];
+                recipeData[5] = node["hits"][0]["ingredient"]["food"]; //show ingredients
 
                 if (recipeData[2].Length > 255)
                 {
