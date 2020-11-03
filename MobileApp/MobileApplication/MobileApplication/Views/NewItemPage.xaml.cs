@@ -14,7 +14,6 @@ namespace MobileApplication.Views
     {
         public Item Item { get; set; }
         private string[] itemInfo = new string[5] { "", "", "", "", "" };
-        Loading loadingPage;
         Database db;
 
         public NewItemPage()
@@ -66,7 +65,12 @@ namespace MobileApplication.Views
                 App.editingItem = false;
             }
 
-            AddItemWithSplashScreen();
+            //returns false if the add fails for some reason
+            if (!db.AddToUserInventory(App.Username, Item.UPC, Item.ProductName, Item.Description, Item.ImageUrl, int.Parse(Quantity.Text)))
+            {
+                await DisplayAlert("Error! Item not added to inventory", itemInfo[1], "OK");
+            }
+            Application.Current.MainPage = new MainPage();
         }
 
         async void Cancel_Clicked(object sender, EventArgs e)
@@ -74,36 +78,6 @@ namespace MobileApplication.Views
             App.editingItem = false;
             App.ScannedUPC = "";
             await Navigation.PopModalAsync();
-        }
-
-        public async void AddItemWithSplashScreen()
-        {
-            loadingPage = new Loading(Loading.LoadType.SavingInventory);
-            await Navigation.PushModalAsync(loadingPage);
-            loadingPage.IsLoading = true;
-
-            await Task.Run(() =>
-            {
-                db = new Database();
-                if (db.AddToUserInventory(App.Username, Item.UPC, Item.ProductName, Item.Description, Item.ImageUrl, int.Parse(Quantity.Text)))
-                {
-                    loadingPage.success = true;
-                }
-                else
-                {
-                    loadingPage.success = false;
-                }
-            });
-
-            if (loadingPage.success)
-            {
-                Application.Current.MainPage = new MainPage();
-            }
-            else
-            {
-                await Navigation.PopModalAsync();
-                await DisplayAlert("Inventory Save Failed", "Item " + itemInfo[1] + " not added to inventory", "OK");
-            }
         }
     }
 }

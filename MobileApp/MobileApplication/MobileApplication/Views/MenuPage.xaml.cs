@@ -22,6 +22,7 @@ namespace MobileApplication.Views
                 new HomeMenuItem {Id = MenuItemType.Inventory, Title="My Fridge" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" },
                 new HomeMenuItem {Id = MenuItemType.NewItem, Title="Add Item to Fridge" },
+                new HomeMenuItem {Id = MenuItemType.ExamplePage, Title="Example Page" },
                 new HomeMenuItem {Id = MenuItemType.RecipeSearch, Title="Recipe Search"},
                 new HomeMenuItem {Id = MenuItemType.Logout, Title="Log Out" },
             };

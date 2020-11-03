@@ -34,6 +34,9 @@ namespace MobileApplication.Views
                     case (int)MenuItemType.NewItem:
                         MenuPages.Add(id, new NavigationPage(new BarcodeScanner()));
                         break;
+                    case (int)MenuItemType.ExamplePage:
+                        MenuPages.Add(id, new NavigationPage(new ExamplePage()));
+                        break;
                     case (int)MenuItemType.RecipeSearch:
                         MenuPages.Add(id, new NavigationPage(new Recipes()));
                         break;

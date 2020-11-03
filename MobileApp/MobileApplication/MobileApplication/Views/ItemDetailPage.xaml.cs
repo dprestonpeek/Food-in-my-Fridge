@@ -13,8 +13,6 @@ namespace MobileApplication.Views
     public partial class ItemDetailPage : ContentPage
     {
         ItemDetailViewModel viewModel;
-        Loading loadingPage;
-        Database db;
 
         public ItemDetailPage(ItemDetailViewModel viewModel)
         {
@@ -46,40 +44,12 @@ namespace MobileApplication.Views
 
         private async void ButtonDeleteItem_Clicked(object sender, EventArgs e)
         {
+            Database db = new Database();
             bool delete = await DisplayAlert("Delete Item", "Are you sure you want to delete this item?", "Yes", "No");
             if (delete)
             {
-                DeleteItemWithSplashScreen();
-            }
-        }
-
-        public async void DeleteItemWithSplashScreen()
-        {
-            loadingPage = new Loading(Loading.LoadType.SavingInventory);
-            await Navigation.PushModalAsync(loadingPage);
-            loadingPage.IsLoading = true;
-
-            await Task.Run(() =>
-            {
-                db = new Database();
-                if (db.RemoveFromUserInventory(App.Username, viewModel.Item.UPC))
-                {
-                    loadingPage.success = true;
-                }
-                else
-                {
-                    loadingPage.success = false;
-                }
-            });
-
-            if (loadingPage.success)
-            {
+                db.RemoveFromUserInventory(App.Username, viewModel.Item.UPC);
                 Application.Current.MainPage = new MainPage();
-            }
-            else
-            {
-                await Navigation.PopModalAsync();
-                await DisplayAlert("Inventory Save Failed", "There was a problem saving your inventory.", "OK");
             }
         }
     }
