@@ -31,7 +31,7 @@ namespace MobileApplication.Views
 
             //this will find recipes by keyword - does not look at inventory
 
-            string[] recipeData = db.products.GetRecipes(searchInput); // currently only gets first result, but will eventually get all
+            string[] recipeData = db.products.GetRecipe(searchInput); // currently only gets first result, but will eventually get all
             //GetProductData() method retuns string array - [0]barcode number [1]product name [2]description [3]image url [4]quantity
             //GetRecipes() method retuns string array - [0]label [1]source [2]image [3]calories [4]url
 

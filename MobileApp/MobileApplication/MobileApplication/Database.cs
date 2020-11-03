@@ -169,7 +169,59 @@ namespace MobileApplication
         }
     }
 
-    //Scrapes product info from source code
+    //Class Recipe is being used as an object.
+    public class Recipe
+    {
+        public string label;
+        public string source;
+        public string image;
+        public int calories;
+        public string url { get; private set; }
+        public List<Ingredient> ingredients { get; private set; }
+
+        public Recipe()
+        {
+            label = "";
+            source = "";
+            image = "";
+            calories = 0;
+            url = "";
+            ingredients = new List<Ingredient>();
+        }
+
+        public void ChangeURL(string url)
+        {
+            this.url = url.Replace("http://", "https://");
+        }
+
+        public void AddIngredient(Ingredient newIngredient)
+        {
+            if (ingredients == null)
+            {
+                ingredients = new List<Ingredient>();
+            }
+
+            ingredients.Add(newIngredient);
+        }
+    }
+
+    //Class Recipe is being used as an object.
+    public class Ingredient
+    {
+        public string parentNode;
+        public string text;
+        public string weight;
+        public string image;
+
+        public Ingredient(string text, string weight, string image)
+        {
+            this.text = text;
+            this.weight = weight;
+            this.image = image;
+        }
+    }
+
+    //Class Products is being used as a controller.
     class Products
     {
         WebClient client;
@@ -240,16 +292,14 @@ namespace MobileApplication
             }
         }
 
-        public string[] GetRecipes(string keyword)
+        public Recipe GetRecipe(string keyword)
         {
             string[] excludedString = new string[0];
-            return GetRecipes(keyword, excludedString);
+            return GetRecipe(keyword, excludedString);
         }
 
-        public string[] GetRecipes(string keyword, string[] excluded)
+        public Recipe GetRecipe(string keyword, string[] excluded)
         {
-            string[] recipes = new string[10];
-            string[] recipeData = new string[10];
             string excludedString = "";
             foreach (string word in excluded)
             {
@@ -260,29 +310,35 @@ namespace MobileApplication
                 byte[] raw = client.DownloadData("https://api.edamam.com/search?q=" + keyword + excludedString + "&app_id=b7f31416&app_key=aa8d1187795346e20ef1b7e187c3a362");
                 string data = Encoding.UTF8.GetString(raw);
                 SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
-                recipeData[0] = node["hits"][0]["recipe"]["label"];
-                recipeData[1] = node["hits"][0]["recipe"]["source"];
-                recipeData[2] = node["hits"][0]["recipe"]["image"];
-                recipeData[3] = node["hits"][0]["recipe"]["calories"];
-                recipeData[4] = node["hits"][0]["recipe"]["url"];
-                recipeData[5] = node["hits"][0]["ingredient"]["food"]; //show ingredients
+                Recipe recipe = new Recipe();
+                recipe.label = node["hits"][0]["recipe"]["label"];
+                recipe.source = node["hits"][0]["recipe"]["source"];
+                recipe.image = node["hits"][0]["recipe"]["image"];
+                recipe.calories = node["hits"][0]["recipe"]["calories"];
+                recipe.ChangeURL(node["hits"][0]["recipe"]["url"]);
 
-                if (recipeData[2].Length > 255)
+                int i = -1;
+                while (true)
                 {
-                    recipeData[2] = recipeData[2].Substring(0, 255);
+                    if (node["hits"][0]["recipe"]["ingredients"][i + 1]["text"] != null)
+                    {
+                        recipe.AddIngredient(new Ingredient(
+                            node["hits"][0]["recipe"]["ingredients"][i + 1]["text"],
+                            node["hits"][0]["recipe"]["ingredients"][i + 1]["weight"],
+                            node["hits"][0]["recipe"]["ingredients"][i + 1]["image"]
+                            ));
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    i++;
                 }
-                recipeData[4] = recipeData[4].Replace("http://", "https://");
-
-                return recipeData;
+                return recipe;
             }
             catch
             {
-                recipeData[0] = "";
-                recipeData[1] = "";
-                recipeData[2] = "";
-                recipeData[3] = "";
-                recipeData[4] = "";
-                return recipeData;
+                return new Recipe();
             }
         }
 
