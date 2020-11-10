@@ -3,27 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApplication.Views.Recipes">
   <ContentPage.Content>
-      <StackLayout>
-          <!--Label Text="Hello Xamarin.Forms!" /-->
+        <ScrollView>
+            <StackLayout>
+                <Button x:Name="suggestBtn" Text="Suggest Recipes Based on Inventory" Clicked="suggestBtn_Clicked"/>
+                <Entry Placeholder="search" x:Name="item"/>
+                <Button x:Name="searchbtn" Text="Search for Recipes By Keyword" Clicked="searchBtn_Clicked"/>
+
+                <StackLayout  x:Name="LabelStack">
+                  <!-- Where recipes go -->
           
-          <Entry Placeholder="item" x:Name="item"/>
+                    
 
-          <Button x:Name="searchbtn" Text="Search for Recipes" Clicked="searchBtn_Clicked"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
 
-          <Label Text="Recipe Options:" />
-
-            <!--Label Text="NAME" />-->
-            <Label x:Name="recipeName" Text="" />
-            <!--<Label Text="DESCRIPTION" />-->
-            <Label x:Name="recipeDesc" Text="" />
-            <Label x:Name="recipeUrl" Text=""/>
-            <Image x:Name="recipeImg" HorizontalOptions="CenterAndExpand" Source=""></Image>
-            <Label x:Name="ingr" Text=""/>
-
-            <!-- Button x:Name="openlinkBtn" Text="Click to Open Link" Clicked="openlinkBtn_Clicked"/ -->
-
-            <Button x:Name="suggestBtn" Text="Suggest Recipes Based on Inventory" Clicked="suggestBtn_Clicked"/>
-
-        </StackLayout>
+      
+      
   </ContentPage.Content>
 </ContentPage>

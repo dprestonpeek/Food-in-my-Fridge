@@ -45,15 +45,22 @@ namespace MobileApplication.Views
             string res_url = recipes[0].url; //need to attatch this to label hyperlink "See full recipe"
 
             string ingr_1 = recipes[0].ingredients[0].text;  //gets the text of the first ingredient from the first recipe
-            
 
 
-            //display results
+
+            /*/display results
             recipeName.Text = "LABEL:" + res_label + "\tCAL: " + res_calories;
             recipeDesc.Text = "SOURCE: " + res_source;
             recipeUrl.Text = res_url;
             recipeImg.Source = res_img;
-            ingr.Text = "INGR: " + ingr_1;
+            ingr.Text = "INGR: " + ingr_1;*/
+
+            LabelStack.Children.Clear();
+            foreach(var rec in recipes)
+            {
+                LabelStack.Children.Add(new Label { Text = rec.label });
+                LabelStack.Children.Add(new Image { Source = rec.image });
+            }
 
         }
         public void openlinkBtn_Clicked(object sender, EventArgs e)
