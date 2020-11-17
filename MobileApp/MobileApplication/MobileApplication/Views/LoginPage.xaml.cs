@@ -52,10 +52,12 @@ namespace MobileApplication.Views
             {
                 if (VerifyLogin())
                 {
+                    loadingPage.Result = true;
                     loadingPage.success = true;
                 }
                 else
                 {
+                    loadingPage.Result = false;
                     loadingPage.success = false;
                 }
             });
@@ -70,7 +72,5 @@ namespace MobileApplication.Views
                 await DisplayAlert("Username/Password not found", "The username and password combination you entered does not exist.", "OK");
             }
         }
-
-
     }
 }

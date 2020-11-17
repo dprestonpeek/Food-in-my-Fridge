@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,15 +13,15 @@ namespace MobileApplication.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Recipes : ContentPage
     {
+        List<Recipe> recipes;
+
         public Recipes()
         {
             InitializeComponent();
         }
-        
-        
 
         //on btn clicked
-        public void searchBtn_Clicked(object sender, EventArgs e)
+        public void SearchBtn_Clicked(object sender, EventArgs e)
         {
             Database db = new Database();   //create database
 
@@ -28,7 +29,7 @@ namespace MobileApplication.Views
 
             //this will find recipes by keyword - does not look at inventory
 
-            List<Recipe> recipes = db.products.GetRecipes(searchInput); //gets list of recipe results
+            recipes = db.products.GetRecipes(searchInput); //gets list of recipe results
             //Recipe - (string) label, source, image, calories, url, (int) time, servings, List<Ingredient> ingredients
             //Ingredient - string parentNode, text, weight, image
 
@@ -38,13 +39,13 @@ namespace MobileApplication.Views
 
 
             //results - when set up to return multiple results, go through this code for every (maxRecipes = 10) result
-            string res_label = recipes[0].label;
-            string res_source = recipes[0].source;
-            string res_img = recipes[0].image;
-            string res_calories = recipes[0].calories;
-            string res_url = recipes[0].url; //need to attatch this to label hyperlink "See full recipe"
+            string res_label = recipes[0].Label;
+            string res_source = recipes[0].Source;
+            string res_img = recipes[0].Image;
+            string res_calories = recipes[0].Calories;
+            string res_url = recipes[0].Url; //need to attatch this to label hyperlink "See full recipe"
 
-            string ingr_1 = recipes[0].ingredients[0].text;  //gets the text of the first ingredient from the first recipe
+            string ingr_1 = recipes[0].Ingredients[0].text;  //gets the text of the first ingredient from the first recipe
 
 
 
@@ -58,16 +59,30 @@ namespace MobileApplication.Views
             LabelStack.Children.Clear();
             foreach(var rec in recipes)
             {
-                LabelStack.Children.Add(new Label { Text = rec.label });
-                LabelStack.Children.Add(new Image { Source = rec.image });
+                Button button = new Button { Text = rec.Label, ImageSource = rec.Image };
+                LabelStack.Children.Add(button);
+                button.Clicked += OpenRecipePage;
+            }
+        }
+
+        public void OpenRecipePage(object sender, EventArgs e)
+        {
+            Recipe thisRecipe = null;
+            Button button = (Button)sender;
+            string buttonText = button.Text;
+
+            foreach (Recipe recipe in recipes)
+            {
+                if (recipe.Label == buttonText)
+                {
+                    thisRecipe = recipe;
+                }
             }
 
+            Navigation.PushModalAsync(new RecipeDetailPage(thisRecipe));
         }
-        public void openlinkBtn_Clicked(object sender, EventArgs e)
-        {
-            //want to be able to open link to recipe webpage in browser
-        }
-        public void suggestBtn_Clicked(object sender, EventArgs e)
+
+        public void SuggestBtn_Clicked(object sender, EventArgs e)
         {
             //want to be able to suggest recipes by comparing to names of items in inventory 'fridge' to recipe ingredients
         }

@@ -9,7 +9,7 @@ namespace MobileApplication.Models
         Inventory,
         About,
         NewItem,
-        RecipeSearch,
+        Recipes,
         Logout
     }
     public class HomeMenuItem

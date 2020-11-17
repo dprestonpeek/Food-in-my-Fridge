@@ -12,7 +12,8 @@ namespace MobileApplication.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
+        public IDataStore<Item> ItemStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
+        public IDataStore<Recipe> RecipeStore => DependencyService.Get<IDataStore<Recipe>>() ?? new MockRecipeStore();
 
         bool isBusy = false;
         public bool IsBusy

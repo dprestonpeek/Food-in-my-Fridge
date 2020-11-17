@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Text;
 
@@ -7,7 +8,7 @@ namespace MobileApplication
 {
     class Database
     {
-        public static string apiKey { get; private set; }
+        public static string ApiKey { get; private set; }
         public WebClient client;
         public Products products;
         private string dbUrl;
@@ -25,7 +26,7 @@ namespace MobileApplication
             client.Headers[HttpRequestHeader.ContentType] = "Content-Type:application/json";
             client.Headers[HttpRequestHeader.Authorization] = "Basic secret-6323";
             dbUrl = "https://f1m5kuz1va.execute-api.us-east-1.amazonaws.com/Stage/";
-            apiKey = "&formatted=y&key=it5z09owihva4agg6jwnms0w06qihl";
+            ApiKey = "&formatted=y&key=it5z09owihva4agg6jwnms0w06qihl";
             request = new Request(client);
             products = new Products(client);
         }
@@ -139,10 +140,10 @@ namespace MobileApplication
         }
 
         //returns products in JSON format. Returns empty array upon error
-        public string[,] GetUserInventory(string username)
+        public string[,] GetUserInventory()
         {
             string url = dbUrl + "getuserinv";
-            string parameters = "{\"username\":\"" + username.ToUpper() + "\",}";
+            string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
 
             string jsonInventory = request.Post(url, parameters);
             if (jsonInventory != null)
@@ -186,62 +187,64 @@ namespace MobileApplication
     //Class Recipe is being used as an object.
     public class Recipe
     {
-        public string label;
-        public string source;
-        public string image;
-        public string calories;
-        public string url { get; private set; }
-        public int time;
-        public int servings;
-        public List<Ingredient> ingredients { get; private set; }
+        public string Label;
+        public string Source;
+        public string Image;
+        public string Calories;
+        public string Url;
+        public int Time;
+        public int Servings;
+        public List<Ingredient> Ingredients;
+        public string DietLabels;
+        public string HealthLabels;
 
         public Recipe()
         {
-            label = "";
-            source = "";
-            image = "";
-            calories = "";
-            url = "";
-            time = 0;
-            servings = 0;
-            ingredients = new List<Ingredient>();
+            Label = "";
+            Source = "";
+            Image = "";
+            Calories = "";
+            Url = "";
+            Time = 0;
+            Servings = 0;
+            Ingredients = new List<Ingredient>();
         }
 
         public Recipe(string label, string source, string calories)
         {
-            this.label = label;
-            this.source = source;
-            this.calories = calories;
+            this.Label = label;
+            this.Source = source;
+            this.Calories = calories;
         }
 
         public void AddImage(string image)
         {
-            this.image = image.Replace("http://", "https://");
+            this.Image = image.Replace("http://", "https://");
         }
 
         public void AddURL(string url)
         {
-            this.url = url.Replace("http://", "https://");
+            this.Url = url.Replace("http://", "https://");
         }
 
         public void AddIngredient(Ingredient newIngredient)
         {
-            if (ingredients == null)
+            if (Ingredients == null)
             {
-                ingredients = new List<Ingredient>();
+                Ingredients = new List<Ingredient>();
             }
 
-            ingredients.Add(newIngredient);
+            Ingredients.Add(newIngredient);
         }
 
         public void AddTime(int time)
         {
-            this.time = time;
+            this.Time = time;
         }
 
         public void AddServings(int servings)
         {
-            this.servings = servings;
+            this.Servings = servings;
         }
     }
 
@@ -302,7 +305,7 @@ namespace MobileApplication
             string[] productData = new string[5];
             try
             {
-                byte[] raw = client.DownloadData("https://api.barcodelookup.com/v2/products?barcode=" + upcCode + Database.apiKey);
+                byte[] raw = client.DownloadData("https://api.barcodelookup.com/v2/products?barcode=" + upcCode + Database.ApiKey);
                 string data = Encoding.UTF8.GetString(raw);
                 SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
                 productData[0] = node["products"][0]["barcode_number"];
@@ -388,8 +391,10 @@ namespace MobileApplication
             }
             catch
             {
-                List<Recipe> theRecipes = new List<Recipe>();
-                theRecipes.Add(new Recipe());
+                List<Recipe> theRecipes = new List<Recipe>
+                {
+                    new Recipe()
+                };
                 return theRecipes;
             }
         }

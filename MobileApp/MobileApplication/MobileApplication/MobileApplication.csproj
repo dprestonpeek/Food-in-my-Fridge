@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Food In My Fridge</AssemblyName>
     <ApplicationIcon>foodinmyfridge_orig_gEy_icon.ico</ApplicationIcon>
-    <RootNamespace>Food In My Fridge</RootNamespace>
+    <RootNamespace>MobileApplication</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />  
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1560" />  
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
   </ItemGroup>
@@ -21,6 +21,9 @@
   <ItemGroup>
     <Compile Update="Views\BarcodeScanner.xaml.cs">
       <DependentUpon>BarcodeScanner.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RecipesPage.xaml.cs">
+      <DependentUpon>RecipesPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -44,6 +47,15 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\NewUpcItemPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RecipeDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RecipeList.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RecipesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Recipes.xaml">

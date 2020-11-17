@@ -5,9 +5,9 @@
   <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Button x:Name="suggestBtn" Text="Suggest Recipes Based on Inventory" Clicked="suggestBtn_Clicked"/>
+                <Button x:Name="suggestBtn" Text="Suggest Recipes Based on Inventory" Clicked="SuggestBtn_Clicked"/>
                 <Entry Placeholder="search" x:Name="item"/>
-                <Button x:Name="searchbtn" Text="Search for Recipes By Keyword" Clicked="searchBtn_Clicked"/>
+                <Button x:Name="searchbtn" Text="Search for Recipes By Keyword" Clicked="SearchBtn_Clicked"/>
 
                 <StackLayout  x:Name="LabelStack">
                   <!-- Where recipes go -->

@@ -1,38 +1,38 @@
-﻿using System;
+﻿using MobileApplication.Models;
+using MobileApplication.Views;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
-
-using MobileApplication.Models;
-using MobileApplication.Views;
 
 namespace MobileApplication.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class RecipesViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
-        public ObservableCollection<string> DBItems { get; set; }
         public Command LoadItemsCommand { get; set; }
+        public List<Recipe> Recipes { get; set; }
 
-        public ItemsViewModel()
+        public RecipesViewModel(List<Recipe> recipes)
         {
-            Title = "My Fridge";
-            Items = new ObservableCollection<Item>();
-            DBItems = new ObservableCollection<string>();
+            Title = "Recipe Search";
+            Recipes = new List<Recipe>();
+
+            //Task.Run(async() => await ExecuteLoadItemsCommand());
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             var listView = new ListView
             {
-                ItemTemplate = new DataTemplate(typeof(InventoryItemCell))
+                ItemTemplate = new DataTemplate(typeof(RecipeItemCell))
             };
 
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
+            foreach (Recipe recipe in recipes)
             {
-                var newItem = item as Item;
-                Items.Add(newItem);
-                await ItemStore.AddItemAsync(newItem);
-            });
+                RecipeStore.AddItemAsync(recipe);
+                Recipes.Add(new Recipe { Label = recipe.Label, Source = recipe.Source, Image = recipe.Image });
+            }
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -41,17 +41,11 @@ namespace MobileApplication.ViewModels
                 return;
             IsBusy = true;
 
-            Database db = new Database();
-            string[,] inventory = db.GetUserInventory();
-
             try
             {
-                Items.Clear();
-                var items = await ItemStore.GetItemsAsync(true);
-                for (int i = 0; i < inventory.Length; i++)
-                {
-                    Items.Add(new Item { UPC = inventory[i, 0], ProductName = inventory[i,1], Description = inventory[i,2], ImageUrl = inventory[i,3], Quantity = inventory[i, 4]});
-                }
+                //Make sure items are clear, then assign Recipe Items in list to search results
+                //Recipes.Clear();
+                await Task.Delay(500);
             }
             catch (Exception ex)
             {
@@ -64,7 +58,7 @@ namespace MobileApplication.ViewModels
         }
     }
 
-    internal class InventoryItemCell : ViewCell
+    internal class RecipeItemCell : ViewCell
     {
         // To register the LongTap/Tap-and-hold gestures once the item model has been assigned
         protected override void OnBindingContextChanged()
@@ -79,7 +73,7 @@ namespace MobileApplication.ViewModels
             {
                 Text = "Delete",
                 IconImageSource = "deleteIcon.png", //Android uses this, for example
-                CommandParameter = ((Item)BindingContext).UPC
+                CommandParameter = ((Recipe)BindingContext).Label
             };
             deleteOption.Clicked += DeleteOption_Clicked;
             ContextActions.Add(deleteOption);
@@ -87,6 +81,7 @@ namespace MobileApplication.ViewModels
             //Repeat for the other 4 options
 
         }
+
         void DeleteOption_Clicked(object sender, EventArgs e)
         {
             //To retrieve the parameters (if is more than one, you should use an object, which could be the same ItemModel 

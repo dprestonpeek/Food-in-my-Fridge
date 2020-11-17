@@ -14,7 +14,7 @@ namespace MobileApplication.Views
 	{
 		public CreateAccountPage ()
 		{
-			InitializeComponent ();
+			InitializeComponent();
             
 		}
 

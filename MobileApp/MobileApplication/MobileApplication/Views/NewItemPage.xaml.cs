@@ -58,7 +58,7 @@ namespace MobileApplication.Views
             };
         }
 
-        async void Save_Clicked(object sender, EventArgs e)
+        void Save_Clicked(object sender, EventArgs e)
         {
             if (App.editingItem)
             {

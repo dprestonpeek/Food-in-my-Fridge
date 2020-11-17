@@ -27,8 +27,7 @@ namespace MobileApplication.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Item;
-            if (item == null)
+            if (!(args.SelectedItem is Item item))
                 return;
 
             await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
