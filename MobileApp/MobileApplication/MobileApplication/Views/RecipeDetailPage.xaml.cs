@@ -21,6 +21,8 @@ namespace MobileApplication.Views
             RecipeLabel.Text = recipe.Label;
             RecipeImage.Source = recipe.Image;
             RecipeSource.Text = "Retrieved from: " + recipe.Source;
-		}
+            RecipeCalories.Text = "Calories: " + recipe.Calories;
+            RecipeServings.Text = "Servings: " + recipe.Servings;
+        }
 	}
 }

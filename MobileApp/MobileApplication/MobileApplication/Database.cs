@@ -246,6 +246,11 @@ namespace MobileApplication
         {
             this.Servings = servings;
         }
+
+        private void AddCalories(string calories)
+        {
+            this.Calories = int.Parse(calories).ToString();
+        }
     }
 
     //Class Recipe is being used as an object.
@@ -389,12 +394,11 @@ namespace MobileApplication
                 }
                 return recipes;
             }
-            catch
+            catch (Exception e)
             {
-                List<Recipe> theRecipes = new List<Recipe>
-                {
-                    new Recipe()
-                };
+                List<Recipe> theRecipes = new List<Recipe>();
+                theRecipes.Add(new Recipe() { Label = e.Message });
+
                 return theRecipes;
             }
         }

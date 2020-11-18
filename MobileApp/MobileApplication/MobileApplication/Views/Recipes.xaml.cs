@@ -23,20 +23,18 @@ namespace MobileApplication.Views
         //on btn clicked
         public void SearchBtn_Clicked(object sender, EventArgs e)
         {
-            Database db = new Database();   //create database
+            //this process will find recipes by keyword - does not look at inventory
 
+            Database db = new Database();   //create database
             string searchInput = item.Text; //get user input from xaml entry
 
-            //this will find recipes by keyword - does not look at inventory
+            recipes = db.products.GetRecipes(searchInput);  //gets list of recipe results
 
-            recipes = db.products.GetRecipes(searchInput); //gets list of recipe results
-            //Recipe - (string) label, source, image, calories, url, (int) time, servings, List<Ingredient> ingredients
-            //Ingredient - string parentNode, text, weight, image
-
-            //GetProductData() method retuns string array - [0]barcode number [1]product name [2]description [3]image url [4]quantity
-
-
-
+            if (recipes[0].Source == "")
+            {
+                DisplayAlert("Error!", recipes[0].Label, "OK");
+                return;
+            }
 
             //results - when set up to return multiple results, go through this code for every (maxRecipes = 10) result
             string res_label = recipes[0].Label;
@@ -47,19 +45,10 @@ namespace MobileApplication.Views
 
             string ingr_1 = recipes[0].Ingredients[0].text;  //gets the text of the first ingredient from the first recipe
 
-
-
-            /*/display results
-            recipeName.Text = "LABEL:" + res_label + "\tCAL: " + res_calories;
-            recipeDesc.Text = "SOURCE: " + res_source;
-            recipeUrl.Text = res_url;
-            recipeImg.Source = res_img;
-            ingr.Text = "INGR: " + ingr_1;*/
-
             LabelStack.Children.Clear();
             foreach(var rec in recipes)
             {
-                Button button = new Button { Text = rec.Label, ImageSource = rec.Image };
+                Button button = new Button { Text = rec.Label + "\nCalories: " + rec.Calories, ImageSource = rec.Image };
                 LabelStack.Children.Add(button);
                 button.Clicked += OpenRecipePage;
             }
@@ -73,7 +62,8 @@ namespace MobileApplication.Views
 
             foreach (Recipe recipe in recipes)
             {
-                if (recipe.Label == buttonText)
+                string recipeBtnLabel = recipe.Label + "\nCalories: " + recipe.Calories;
+                if (recipeBtnLabel == buttonText)
                 {
                     thisRecipe = recipe;
                 }
