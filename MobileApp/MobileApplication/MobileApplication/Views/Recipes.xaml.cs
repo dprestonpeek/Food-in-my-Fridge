@@ -60,6 +60,7 @@ namespace MobileApplication.Views
             {
                 LabelStack.Children.Add(new Label { Text = rec.label });
                 LabelStack.Children.Add(new Image { Source = rec.image });
+                LabelStack.Children.Add(new Label { Text = ingr_1 });
             }
 
         }
