@@ -6,6 +6,8 @@ using Xamarin.Forms.Xaml;
 using MobileApplication.Models;
 using MobileApplication.ViewModels;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace MobileApplication.Views
 {
@@ -13,15 +15,23 @@ namespace MobileApplication.Views
     public partial class ItemDetailPage : ContentPage
     {
         ItemDetailViewModel viewModel;
+        List<string> inventoryItems;
         Loading loadingPage;
         Database db;
 
-        public ItemDetailPage(ItemDetailViewModel viewModel)
+        public ItemDetailPage(ItemDetailViewModel viewModel, ObservableCollection<Item> inventoryItems)
         {
             InitializeComponent();
+            db = new Database();
             ButtonEditItem.Clicked += ButtonEditItem_Clicked;
             ButtonDeleteItem.Clicked += ButtonDeleteItem_Clicked;
             BindingContext = this.viewModel = viewModel;
+
+            this.inventoryItems = new List<string>();
+            foreach (Item item in inventoryItems)
+            {
+                this.inventoryItems.Add(item.ProductName);
+            }
         }
 
         public ItemDetailPage()
@@ -61,7 +71,6 @@ namespace MobileApplication.Views
 
             await Task.Run(() =>
             {
-                db = new Database();
                 if (db.RemoveFromUserInventory(App.Username, viewModel.Item.UPC))
                 {
                     loadingPage.success = true;
@@ -81,6 +90,29 @@ namespace MobileApplication.Views
                 await Navigation.PopModalAsync();
                 await DisplayAlert("Inventory Save Failed", "There was a problem saving your inventory.", "OK");
             }
+        }
+
+        private void SuggestRecipes_Clicked(object sender, EventArgs e)
+        {
+            List<Ingredient> recipeIng = new List<Ingredient>();
+            List<string> ingredients = new List<string>();
+            List<Recipe> recipes = db.GetRecipes(viewModel.Item.ProductName, 3);
+
+            foreach (Recipe recipe in recipes)
+            {
+                foreach (Ingredient ing in recipe.Ingredients)
+                {
+                    ingredients.Add(ing.text);
+                }
+                recipe.score = RecipeMatch.GetRecipeScore(new List<string>() { viewModel.Item.ProductName }, ingredients);
+            }
+
+            if (recipes.Count > 0)
+            {
+                recipes.Sort((x, y) => x.score.CompareTo(y.score));
+            }
+
+            Navigation.PushModalAsync(new SuggestedRecipes(recipes));
         }
     }
 }

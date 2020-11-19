@@ -6,6 +6,7 @@ using Xamarin.Forms.Xaml;
 
 using MobileApplication.Models;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace MobileApplication.Views
 {
@@ -13,15 +14,32 @@ namespace MobileApplication.Views
     public partial class NewItemPage : ContentPage
     {
         public Item Item { get; set; }
+        ObservableCollection<Item> inventory;
         private string[] itemInfo = new string[5] { "", "", "", "", "" };
         Loading loadingPage;
         Database db;
 
+        public NewItemPage(Ingredient ing)
+        {
+            InitializeComponent();
+            GetItem(ing);
+        }
+
         public NewItemPage()
         {
             InitializeComponent();
+            GetItem();
+        }
+
+        public void GetItem()
+        {
+            GetItem(null);
+        }
+
+        private void GetItem(Ingredient ing)
+        {
             db = new Database();            //Instantiate the database item to interact with the database
-            if (App.ScannedUPC != "")       
+            if (App.ScannedUPC != "")
             {
                 if (App.editingItem)
                 {
@@ -41,6 +59,7 @@ namespace MobileApplication.Views
                 itemInfo[3] = "";
                 itemInfo[4] = "";
             }
+
             Item = new Item
             {
                 UPC = "",
@@ -49,6 +68,12 @@ namespace MobileApplication.Views
                 ImageUrl = "",
                 Quantity = ""
             };
+
+            if (ing != null)
+            {
+                Item.ProductName = ing.text;
+                Item.ImageUrl = ing.image;
+            }
 
             BindingContext = this;
 

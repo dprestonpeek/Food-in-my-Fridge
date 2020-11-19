@@ -11,6 +11,7 @@ using MobileApplication.Models;
 using MobileApplication.Views;
 using MobileApplication.ViewModels;
 using ZXing.Net.Mobile.Forms;
+using System.Collections.ObjectModel;
 
 namespace MobileApplication.Views
 {
@@ -30,7 +31,7 @@ namespace MobileApplication.Views
             if (!(args.SelectedItem is Item item))
                 return;
 
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item), viewModel.Items));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;

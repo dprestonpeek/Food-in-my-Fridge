@@ -10,9 +10,8 @@ namespace MobileApplication
     {
         public static string ApiKey { get; private set; }
         public WebClient client;
-        public Products products;
+        public string ErrorMessage { get; private set; }
         private string dbUrl;
-        private string errorMessage;
         private Request request;
 
         public Database()
@@ -28,9 +27,9 @@ namespace MobileApplication
             dbUrl = "https://f1m5kuz1va.execute-api.us-east-1.amazonaws.com/Stage/";
             ApiKey = "&formatted=y&key=it5z09owihva4agg6jwnms0w06qihl";
             request = new Request(client);
-            products = new Products(client);
         }
 
+        #region User
         public bool UserLogin(string username, string password)
         {
             if (username == null || password == null)
@@ -43,7 +42,7 @@ namespace MobileApplication
             {
                 return true;
             }
-            errorMessage = request.GetLastErrorMessage();
+            ErrorMessage = request.GetLastErrorMessage();
             return false;
         }
 
@@ -57,9 +56,20 @@ namespace MobileApplication
                 {
                     return true;
                 }
-                errorMessage = request.GetLastErrorMessage();
+                ErrorMessage = request.GetLastErrorMessage();
+            }
+            else
+            {
+                ErrorMessage = "Account with username already exists";
             }
             return false;
+        }
+        #endregion
+
+        #region Inventory
+        public bool AddToUserInventory(string username, string productName, string imageUrl)
+        {
+            return AddToUserInventory(username, "", productName, "", imageUrl, 1);
         }
 
         public bool AddToUserInventory(string username, string upcCode, string productName, string productDesc, string imageUrl, int quantity)
@@ -103,16 +113,7 @@ namespace MobileApplication
             {
                 return true;
             }
-            errorMessage = request.GetLastErrorMessage();
-            return false;
-        }
-
-        public bool ItemExistsInInventory(string username, string upcCode)
-        {
-            if (GetItemFromInventory(username, upcCode) != null)
-            {
-                return true;
-            }
+            ErrorMessage = request.GetLastErrorMessage();
             return false;
         }
 
@@ -135,8 +136,17 @@ namespace MobileApplication
                     }
                 }
             }
-            errorMessage = request.GetLastErrorMessage();
+            ErrorMessage = request.GetLastErrorMessage();
             return null;
+        }
+
+        public bool ItemExistsInInventory(string username, string upcCode)
+        {
+            if (GetItemFromInventory(username, upcCode) != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         //returns products in JSON format. Returns empty array upon error
@@ -161,7 +171,7 @@ namespace MobileApplication
                 }
                 return inventory;
             }
-            errorMessage = request.GetLastErrorMessage();
+            ErrorMessage = request.GetLastErrorMessage();
             return null;
         }
 
@@ -174,17 +184,125 @@ namespace MobileApplication
             {
                 return true;
             }
-            errorMessage = request.GetLastErrorMessage();
+            ErrorMessage = request.GetLastErrorMessage();
             return false;
         }
+        #endregion
 
-        public string GetErrorMessage()
+        #region Products
+        public string GetProductName(string upcCode)
         {
-            return errorMessage;
+            return GetProductData(upcCode)[1];
         }
+
+        public string[] GetProductData(string upcCode)
+        {
+            string[] productData = new string[5];
+            try
+            {
+                byte[] raw = client.DownloadData("https://api.barcodelookup.com/v2/products?barcode=" + upcCode + ApiKey);
+                string data = Encoding.UTF8.GetString(raw);
+                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
+                productData[0] = node["products"][0]["barcode_number"];
+                productData[1] = node["products"][0]["product_name"];
+                productData[2] = node["products"][0]["description"];
+                productData[3] = node["products"][0]["images"][0];
+                //quantity
+                productData[4] = "1";
+
+                if (productData[2].Length > 255)
+                {
+                    productData[2] = productData[2].Substring(0, 255);
+                }
+                productData[3] = productData[3].Replace("http://", "https://");
+
+                return productData;
+            }
+            catch
+            {
+                productData[0] = "Barcode not recognized";
+                productData[1] = "";
+                productData[2] = "";
+                productData[3] = "";
+                //quantity
+                productData[4] = "1";
+                ErrorMessage = "Barcode not recognized";
+                return productData;
+            }
+        }
+        #endregion
+
+        #region Recipes
+        public List<Recipe> GetRecipes(string keyword)
+        {
+            return GetRecipes(keyword, new string[0], 10);
+        }
+
+        public List<Recipe> GetRecipes(string keyword, int numRecipes)
+        {
+            return GetRecipes(keyword, new string[0], numRecipes);
+        }
+
+        private List<Recipe> GetRecipes(string keyword, string[] excluded, int numRecipes)
+        {
+            List<Recipe> recipes = new List<Recipe>();
+            string excludedString = "";
+
+            foreach (string word in excluded)
+            {
+                excludedString += "&excluded=" + word;
+            }
+
+            try
+            {
+                byte[] raw = client.DownloadData("https://api.edamam.com/search?q=" + keyword + excludedString + "&to=" + numRecipes + "&app_id=b7f31416&app_key=aa8d1187795346e20ef1b7e187c3a362");
+                string data = Encoding.UTF8.GetString(raw);
+                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
+
+                for (int hit = 0; hit < numRecipes; hit++)
+                {
+                    Recipe recipe = new Recipe(
+                        node["hits"][hit]["recipe"]["label"],
+                        node["hits"][hit]["recipe"]["source"],
+                        node["hits"][hit]["recipe"]["calories"]);
+                    recipe.AddImage(node["hits"][hit]["recipe"]["image"]);
+                    recipe.AddURL(node["hits"][hit]["recipe"]["url"]);
+                    recipe.AddTime(node["hits"][hit]["recipe"]["totalTime"]);
+                    recipe.AddServings(node["hits"][hit]["recipe"]["yield"]);
+
+                    int i = -1;
+                    while (true)
+                    {
+                        if (node["hits"][0]["recipe"]["ingredients"][i + 1]["text"] != null)
+                        {
+                            recipe.AddIngredient(new Ingredient(
+                                node["hits"][hit]["recipe"]["ingredients"][i + 1]["text"],
+                                node["hits"][hit]["recipe"]["ingredients"][i + 1]["weight"],
+                                node["hits"][hit]["recipe"]["ingredients"][i + 1]["image"]
+                                ));
+                        }
+                        else
+                        {
+                            recipes.Add(recipe);
+                            break;
+                        }
+                        i++;
+                    }
+                }
+                return recipes;
+            }
+            catch (Exception e)
+            {
+                List<Recipe> theRecipes = new List<Recipe>();
+                theRecipes.Add(new Recipe() { Label = e.Message });
+
+                return theRecipes;
+            }
+        }
+        #endregion
     }
 
-    //Class Recipe is being used as an object.
+    //The recipe object returned when GetRecipes() is called
     public class Recipe
     {
         public string Label;
@@ -197,6 +315,7 @@ namespace MobileApplication
         public List<Ingredient> Ingredients;
         public string DietLabels;
         public string HealthLabels;
+        public int score;
 
         public Recipe()
         {
@@ -253,7 +372,7 @@ namespace MobileApplication
         }
     }
 
-    //Class Recipe is being used as an object.
+    //The ingredient object returned with each Recipe
     public class Ingredient
     {
         public string parentNode;
@@ -269,146 +388,7 @@ namespace MobileApplication
         }
     }
 
-    //Class Products is being used as a controller.
-    class Products
-    {
-        WebClient client;
-        string lastError = "";
-
-        string upc;
-        string name;
-        string desc;
-        string imagesource;
-
-        public Products(WebClient theClient)
-        {
-            client = theClient;
-        }
-
-        public string GetProduct(string upcCode)
-        {
-            string[] data;
-            try
-            {
-                data = GetProductData(upcCode);
-            }
-            catch (Exception e)
-            {
-                lastError = e.Message;
-                return null;
-            }
-
-            upc = data[0];
-            name = data[1];
-            desc = data[2];
-            imagesource = data[3];
-            return name;
-        }
-
-        public string[] GetProductData(string upcCode)
-        {
-            string[] productData = new string[5];
-            try
-            {
-                byte[] raw = client.DownloadData("https://api.barcodelookup.com/v2/products?barcode=" + upcCode + Database.ApiKey);
-                string data = Encoding.UTF8.GetString(raw);
-                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
-                productData[0] = node["products"][0]["barcode_number"];
-                productData[1] = node["products"][0]["product_name"];
-                productData[2] = node["products"][0]["description"];
-                productData[3] = node["products"][0]["images"][0];
-                //quantity
-                productData[4] = "1";
-
-                if (productData[2].Length > 255)
-                {
-                    productData[2] = productData[2].Substring(0, 255);
-                }
-                productData[3] = productData[3].Replace("http://", "https://");
-
-                return productData;
-            }
-            catch
-            {
-                productData[0] = "Barcode not recognized";
-                productData[1] = "";
-                productData[2] = "";
-                productData[3] = "";
-                //quantity
-                productData[4] = "1";
-                return productData;
-            }
-        }
-
-        public List<Recipe> GetRecipes(string keyword)
-        {
-            string[] excludedString = new string[0];
-            return GetRecipes(keyword, excludedString);
-        }
-
-        public List<Recipe> GetRecipes(string keyword, string[] excluded)
-        {
-            List<Recipe> recipes = new List<Recipe>();
-            string excludedString = "";
-
-            foreach (string word in excluded)
-            {
-                excludedString += "&excluded=" + word;
-            }
-
-            try
-            {
-                byte[] raw = client.DownloadData("https://api.edamam.com/search?q=" + keyword + excludedString + "&app_id=b7f31416&app_key=aa8d1187795346e20ef1b7e187c3a362");
-                string data = Encoding.UTF8.GetString(raw);
-                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
-
-                for (int hit = 0; hit < 10; hit++)
-                {
-                    Recipe recipe = new Recipe(
-                        node["hits"][hit]["recipe"]["label"],
-                        node["hits"][hit]["recipe"]["source"],
-                        node["hits"][hit]["recipe"]["calories"]);
-                    recipe.AddImage(node["hits"][hit]["recipe"]["image"]);
-                    recipe.AddURL(node["hits"][hit]["recipe"]["url"]);
-                    recipe.AddTime(node["hits"][hit]["recipe"]["totalTime"]);
-                    recipe.AddServings(node["hits"][hit]["recipe"]["yield"]);
-
-                    int i = -1;
-                    while (true)
-                    {
-                        if (node["hits"][0]["recipe"]["ingredients"][i + 1]["text"] != null)
-                        {
-                            recipe.AddIngredient(new Ingredient(
-                                node["hits"][hit]["recipe"]["ingredients"][i + 1]["text"],
-                                node["hits"][hit]["recipe"]["ingredients"][i + 1]["weight"],
-                                node["hits"][hit]["recipe"]["ingredients"][i + 1]["image"]
-                                ));
-                        }
-                        else
-                        {
-                            recipes.Add(recipe);
-                            break;
-                        }
-                        i++;
-                    }
-                }
-                return recipes;
-            }
-            catch (Exception e)
-            {
-                List<Recipe> theRecipes = new List<Recipe>();
-                theRecipes.Add(new Recipe() { Label = e.Message });
-
-                return theRecipes;
-            }
-        }
-
-        public string GetLastErrorMessage()
-        {
-            return lastError;
-        }
-    }
-
+    //An object to hold a separate error message when Posting to DynamoDB
     class Request
     {
         private WebClient client;

@@ -20,7 +20,8 @@
                 <Label x:Name="Quantity" Text="{Binding Item.Quantity}" FontSize="Medium"/>
             </StackLayout>
         </StackLayout>
-        
+
+        <Button x:Name="SuggestRecipes" Text="Suggest Recipes with this product" Clicked="SuggestRecipes_Clicked"/>
         <Button x:Name="ButtonEditItem" Text="Edit Item"/>
         <Button x:Name="ButtonDeleteItem" Text="Delete Item" BackgroundColor="DarkGray"/>
     </StackLayout>

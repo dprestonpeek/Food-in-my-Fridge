@@ -28,7 +28,7 @@ namespace MobileApplication.Views
             Database db = new Database();   //create database
             string searchInput = item.Text; //get user input from xaml entry
 
-            recipes = db.products.GetRecipes(searchInput);  //gets list of recipe results
+            recipes = db.GetRecipes(searchInput);  //gets list of recipe results
 
             if (recipes[0].Source == "")
             {

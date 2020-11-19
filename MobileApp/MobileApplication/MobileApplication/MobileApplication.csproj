@@ -22,8 +22,8 @@
     <Compile Update="Views\BarcodeScanner.xaml.cs">
       <DependentUpon>BarcodeScanner.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\RecipesPage.xaml.cs">
-      <DependentUpon>RecipesPage.xaml</DependentUpon>
+    <Compile Update="Views\SuggestedRecipes.xaml.cs">
+      <DependentUpon>SuggestedRecipes.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -52,10 +52,7 @@
     <EmbeddedResource Update="Views\RecipeDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\RecipeList.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\RecipesPage.xaml">
+    <EmbeddedResource Update="Views\SuggestedRecipes.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Recipes.xaml">
