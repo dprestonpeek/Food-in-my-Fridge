@@ -148,8 +148,11 @@ namespace MobileApplication
             }
             return false;
         }
-
-        //returns products in JSON format. Returns empty array upon error
+        
+        /// <summary>
+        /// Returns products in a 2 dimensional string array. Returns empty array upon error.
+        /// </summary>
+        /// <returns></returns>
         public string[,] GetUserInventory()
         {
             string url = dbUrl + "getuserinv";
@@ -190,12 +193,57 @@ namespace MobileApplication
         #endregion
 
         #region Products
-        public string GetProductName(string upcCode)
+        /// <summary>
+        /// Returns a list of 6 products to choose from.
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public string[] GetProductsByKeyword(string keyword)
         {
-            return GetProductData(upcCode)[1];
+            string[] products = new string[6];
+            try
+            {
+                byte[] raw = client.DownloadData("https://api.barcodelookup.com/v2/products?search=" + keyword + ApiKey);
+                string data = Encoding.UTF8.GetString(raw);
+                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
+
+                for (int i = 0; i < 6; i++)
+                {
+                    Product product = new Product()
+                    {
+                        Image = node["products"][i]["images"][0],
+                        Category = node["products"][i]["category"],
+                        Weight = node["products"][i]["weight"]
+                    };
+                    product.Image = product.Image.Replace("http://", "https://");
+                }
+
+                return products;
+            }
+            catch
+            {
+                products[0] = "No results found.";
+                ErrorMessage = "No Results Found.";
+                return products;
+            }
         }
 
-        public string[] GetProductData(string upcCode)
+        /// <summary>
+        /// Returns the name of the product.
+        /// </summary>
+        /// <param name="upcCode"></param>
+        /// <returns></returns>
+        public string GetProductNameByUPC(string upcCode)
+        {
+            return GetProductDataByUPC(upcCode)[1];
+        }
+
+        /// <summary>
+        /// Returns an array of string data from the product. [deprecated]
+        /// </summary>
+        /// <param name="upcCode"></param>
+        /// <returns></returns>
+        public string[] GetProductDataByUPC(string upcCode)
         {
             string[] productData = new string[5];
             try
@@ -228,6 +276,45 @@ namespace MobileApplication
                 productData[4] = "1";
                 ErrorMessage = "Barcode not recognized";
                 return productData;
+            }
+        }
+
+        /// <summary>
+        /// Returns a Product object with data.
+        /// </summary>
+        /// <param name="upcCode"></param>
+        /// <returns></returns>
+        public Product GetProductByUPC(string upcCode)
+        {
+            try
+            {
+                byte[] raw = client.DownloadData("https://api.barcodelookup.com/v2/products?barcode=" + upcCode + ApiKey);
+                string data = Encoding.UTF8.GetString(raw);
+                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
+                Product product = new Product()
+                {
+                    Barcode = node["products"][0]["barcode_number"],
+                    Name = node["products"][0]["product_name"],
+                    Description = node["products"][0]["description"],
+                    Image = node["products"][0]["images"][0],
+                    Quantity = "1"
+                };
+
+                if (product.Description.Length > 255)
+                {
+                    product.Description = product.Description.Substring(0, 255);
+                }
+                product.Image = product.Image.Replace("http://", "https://");
+
+                return product;
+            }
+            catch
+            {
+                ErrorMessage = "Barcode not recognized";
+                return new Product()
+                {
+                    Name = "Barcode not recognized"
+                };
             }
         }
         #endregion
@@ -300,6 +387,17 @@ namespace MobileApplication
             }
         }
         #endregion
+    }
+
+    public class Product
+    {
+        public string Name;
+        public string Barcode;
+        public string Description;
+        public string Image;
+        public string Category;
+        public string Weight;
+        public string Quantity;
     }
 
     //The recipe object returned when GetRecipes() is called

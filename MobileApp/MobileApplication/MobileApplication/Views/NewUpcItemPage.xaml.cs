@@ -30,7 +30,7 @@ namespace MobileApplication.Views
                 else
                 {
                     Title = "New Item";
-                    itemInfo = db.GetProductData(App.ScannedUPC);
+                    itemInfo = db.GetProductDataByUPC(App.ScannedUPC);
                 }
             }
             else
@@ -39,7 +39,7 @@ namespace MobileApplication.Views
                 itemInfo[1] = "";
                 itemInfo[2] = "";
                 itemInfo[3] = "";
-                itemInfo[4] = "";
+                itemInfo[4] = "1";
             }
             Item = new Item
             {

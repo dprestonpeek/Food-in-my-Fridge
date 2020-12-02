@@ -14,7 +14,6 @@ namespace MobileApplication.Views
     public partial class NewItemPage : ContentPage
     {
         public Item Item { get; set; }
-        ObservableCollection<Item> inventory;
         private string[] itemInfo = new string[5] { "", "", "", "", "" };
         Loading loadingPage;
         Database db;
@@ -39,20 +38,15 @@ namespace MobileApplication.Views
         private void GetItem(Ingredient ing)
         {
             db = new Database();            //Instantiate the database item to interact with the database
-            if (App.ScannedUPC != "")
+
+            if (App.editingItem)
             {
-                if (App.editingItem)
-                {
-                    Title = "Edit Item";
-                    itemInfo = db.GetItemFromInventory(App.Username, App.ScannedUPC);
-                }
-                else
-                {
-                    Title = "New Item";
-                }
+                Title = "Edit Item";
+                itemInfo = db.GetItemFromInventory(App.Username, App.ScannedUPC);
             }
             else
             {
+                Title = "New Item";
                 itemInfo[0] = "";
                 itemInfo[1] = "";
                 itemInfo[2] = "";
@@ -62,11 +56,11 @@ namespace MobileApplication.Views
 
             Item = new Item
             {
-                UPC = "",
-                ProductName = "",
-                Description = "",
-                ImageUrl = "",
-                Quantity = ""
+                UPC = itemInfo[0],
+                ProductName = itemInfo[1],
+                Description = itemInfo[2],
+                ImageUrl = itemInfo[3],
+                Quantity = itemInfo[4]
             };
 
             if (ing != null)
@@ -99,6 +93,12 @@ namespace MobileApplication.Views
             App.editingItem = false;
             App.ScannedUPC = "";
             await Navigation.PopModalAsync();
+        }
+
+        void Image_Clicked(object sender, EventArgs e)
+        {
+            DisplayAlert("Choose an image...", "Hopefully an image here?", "Choose");
+            //ImageSelection.IsVisible
         }
 
         public async void AddItemWithSplashScreen()

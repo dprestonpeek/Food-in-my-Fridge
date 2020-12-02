@@ -26,7 +26,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Orientation="Vertical">
+                        <StackLayout Orientation="Horizontal">
                             <StackLayout Orientation="Vertical"  HorizontalOptions="Center">
                                 <Image HorizontalOptions="Center" VerticalOptions="Center"
                                        HeightRequest="100" WidthRequest="100"

@@ -23,9 +23,13 @@
     
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
-            <Image HorizontalOptions="CenterAndExpand" Source="{Binding Item.ImageUrl}"></Image>
-            <Label Text="UPC" FontSize="Medium" />
-            <Editor Text="{Binding Item.UPC}" FontSize="Small" Margin="0" />
+            <StackLayout x:Name="ImageDisplay">
+                <Button x:Name="ImageButton" HorizontalOptions="CenterAndExpand" ImageSource="{Binding Item.ImageUrl}" Clicked="Image_Clicked"></Button>
+                <Label x:Name="HelpText" Text="(Click Image to Change)" FontSize="Small" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <StackLayout x:Name="ImageSelection" IsVisible="False">
+                
+            </StackLayout>
             <Label Text="Product Name" FontSize="Medium" />
             <Entry Text="{Binding Item.ProductName}" FontSize="Small" />
             <Label Text="Description" FontSize="Medium" />
