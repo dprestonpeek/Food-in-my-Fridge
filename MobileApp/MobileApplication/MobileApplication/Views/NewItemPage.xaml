@@ -22,35 +22,78 @@
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
-            <StackLayout x:Name="ImageDisplay">
-                <Button x:Name="ImageButton" HorizontalOptions="CenterAndExpand" ImageSource="{Binding Item.ImageUrl}" Clicked="Image_Clicked"></Button>
-                <Label x:Name="HelpText" Text="(Click Image to Change)" FontSize="Small" HorizontalOptions="Center"></Label>
-            </StackLayout>
-            <StackLayout x:Name="ImageSelection" IsVisible="False">
-                
-            </StackLayout>
-            <Label Text="Product Name" FontSize="Medium" />
-            <Entry Text="{Binding Item.ProductName}" FontSize="Small" />
-            <Label Text="Description" FontSize="Medium" />
-            <Editor Text="{Binding Item.Description}" FontSize="Small" Margin="0" />
-            <Label Text="Image URL" FontSize="Medium" />
-            <Editor Text="{Binding Item.ImageUrl}" FontSize="Small" Margin="0" />
+        <ScrollView>
+            <StackLayout Spacing="20" Padding="15">
+                <StackLayout x:Name="ImageDisplay">
+                    <Button x:Name="ImageButton" HorizontalOptions="CenterAndExpand" ImageSource="{Binding Item.ImageUrl}" Clicked="Image_Clicked"></Button>
+                    <Label x:Name="HelpText" Text="(Click Image to Change)" FontSize="Small" HorizontalOptions="Center"></Label>
+                </StackLayout>
+                <StackLayout x:Name="ImageSelection" IsVisible="False" BackgroundColor="LightGray">
+                    <StackLayout Orientation="Vertical">
+                        <StackLayout Orientation="Horizontal">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100"/>
+                                    <RowDefinition Height="100"/>
+                                    <RowDefinition Height="100"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-            <StackLayout Orientation="Horizontal">
-                <StackLayout Orientation="Vertical" VerticalOptions="Center">
-                    <Label Text="Quantity: " FontSize="Medium" />
+                                <Image x:Name="Image1" HorizontalOptions="Center" VerticalOptions="Center"
+                                       Grid.Row="0" Grid.Column="0"/>
+                                <Button x:Name="ImageButton1" Text="1" TextColor="Transparent" HorizontalOptions="Center" VerticalOptions="Center" 
+                                        BackgroundColor="Transparent" Clicked="NewImageSelected" Grid.Row="0" Grid.Column="0"/>
+                                <Image x:Name="Image2" HorizontalOptions="Center" VerticalOptions="Center"
+                                       Grid.Row="0" Grid.Column="1"/>
+                                <Button x:Name="ImageButton2" Text="2" TextColor="Transparent" HorizontalOptions="Center" VerticalOptions="Center" 
+                                        BackgroundColor="Transparent" Clicked="NewImageSelected" Grid.Row="0" Grid.Column="1"/>
+                                <Image x:Name="Image3" HorizontalOptions="Center" VerticalOptions="Center"
+                                       Grid.Row="1" Grid.Column="0"/>
+                                <Button x:Name="ImageButton3" Text="3" TextColor="Transparent" HorizontalOptions="Center" VerticalOptions="Center" 
+                                        BackgroundColor="Transparent" Clicked="NewImageSelected" Grid.Row="1" Grid.Column="0"/>
+                                <Image x:Name="Image4" HorizontalOptions="Center" VerticalOptions="Center"
+                                       Grid.Row="1" Grid.Column="1"/>
+                                <Button x:Name="ImageButton4" Text="4" TextColor="Transparent" HorizontalOptions="Center" VerticalOptions="Center" 
+                                        BackgroundColor="Transparent" Clicked="NewImageSelected" Grid.Row="1" Grid.Column="1"/>
+                                <Image x:Name="Image5" HorizontalOptions="Center" VerticalOptions="Center"
+                                       Grid.Row="2" Grid.Column="0"/>
+                                <Button x:Name="ImageButton5" Text="5" TextColor="Transparent" HorizontalOptions="Center" VerticalOptions="Center" 
+                                        BackgroundColor="Transparent" Clicked="NewImageSelected" Grid.Row="2" Grid.Column="0"/>
+                                <Image x:Name="Image6" HorizontalOptions="Center" VerticalOptions="Center"
+                                       Grid.Row="2" Grid.Column="1"/>
+                                <Button x:Name="ImageButton6" Text="6" TextColor="Transparent" HorizontalOptions="Center" VerticalOptions="Center" 
+                                        BackgroundColor="Transparent" Clicked="NewImageSelected" Grid.Row="2" Grid.Column="1"/>
+                            </Grid>
+                        </StackLayout>
+                        <Label Text="Custom Image URL" FontSize="Medium" />
+                        <Editor x:Name="CustomImageUrl" Text="{Binding Item.ImageUrl}" FontSize="Small" Margin="0" />
+                        <Button Text="Save Custom Image Url" Clicked="SaveCustomUrl_Clicked"/>
+                        <Button Text="Cancel Image Change" Clicked="CancelImageChange_Clicked"/>
+                    </StackLayout>
                 </StackLayout>
-                <StackLayout Orientation="Vertical"  HorizontalOptions="Center" VerticalOptions="Center">
-                    <Label x:Name="Quantity" Text="{Binding Item.Quantity}" FontSize="Medium"/>
+                <Label Text="Product Name" FontSize="Medium" />
+                <Entry Text="{Binding Item.ProductName}" FontSize="Small" />
+                <Label Text="Description" FontSize="Medium" />
+                <Editor Text="{Binding Item.Description}" FontSize="Small" Margin="0" />
+
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center">
+                        <Label Text="Quantity: " FontSize="Medium" />
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical"  HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label x:Name="Quantity" Text="{Binding Item.Quantity}" FontSize="Medium"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical"  HorizontalOptions="Center" VerticalOptions="Center">
+                        <Stepper x:Name="QuantitySelector" Minimum="0" Maximum="10" HorizontalOptions="Center" Value="{Binding Item.Quantity}" />
+                    </StackLayout>
                 </StackLayout>
-                <StackLayout Orientation="Vertical"  HorizontalOptions="Center" VerticalOptions="Center">
-                    <Stepper x:Name="QuantitySelector" Minimum="0" Maximum="10" HorizontalOptions="Center" Value="{Binding Item.Quantity}" />
-                </StackLayout>
-            </StackLayout>
             
-            <Button x:Name="ButtonSaveItem" Text="Save" Clicked="Save_Clicked"/>
-            <Button x:Name="ButtonCancelItem" Text="Cancel" Clicked="Cancel_Clicked"/>
-        </StackLayout>
+                <Button x:Name="ButtonSaveItem" Text="Save" HorizontalOptions="CenterAndExpand" Clicked="Save_Clicked"/>
+                <Button x:Name="ButtonCancelItem" Text="Cancel" HorizontalOptions="CenterAndExpand" Clicked="Cancel_Clicked"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MobileApplication.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Text;
+using System.Threading;
 
 namespace MobileApplication
 {
@@ -30,6 +32,12 @@ namespace MobileApplication
         }
 
         #region User
+        /// <summary>
+        /// Logs a user in with username and password. Returns true on success.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public bool UserLogin(string username, string password)
         {
             if (username == null || password == null)
@@ -46,6 +54,12 @@ namespace MobileApplication
             return false;
         }
 
+        /// <summary>
+        /// Registers a user with username and password. Returns true on success.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public bool UserRegister(string username, string password)
         {
             string url = dbUrl + "register";
@@ -67,19 +81,86 @@ namespace MobileApplication
         #endregion
 
         #region Inventory
-        public bool AddToUserInventory(string username, string productName, string imageUrl)
+        /// <summary>
+        /// Add to user inventory with productName and imageUrl. Returns true on success.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="productName"></param>
+        /// <param name="imageUrl"></param>
+        /// <returns></returns>
+        public bool AddToUserInventory(string productName, string imageUrl)
         {
-            return AddToUserInventory(username, "", productName, "", imageUrl, 1);
+            return AddToUserInventory("", productName, "", imageUrl, 1);
         }
 
-        public bool AddToUserInventory(string username, string upcCode, string productName, string productDesc, string imageUrl, int quantity)
+        /// <summary>
+        /// Add to user Inventory with Item object. Returns true on success.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool AddToUserInventory(Item item)
+        {
+            string url = dbUrl + "adduserinv";
+            string parameters;
+            if (item.UPC == "")
+            {
+                int productId = 0;
+                while (ItemExistsInInventory(App.Username, productId.ToString()))
+                {
+                    productId++;
+                }
+                item.UPC = productId.ToString();
+            }
+            if (item.ProductName == "")
+            {
+                return false;
+            }
+            if (item.Description == "")
+            {
+                item.Description = "no description";
+            }
+            else if (item.Description.Length > 255)
+            {
+                item.Description = item.Description.Substring(0, 255);
+            }
+            if (item.ImageUrl == "")
+            {
+                item.ImageUrl = "https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png";
+            }
+
+            parameters = "{\"username\":\"" + App.Username.ToUpper();
+            parameters += "\",\"scanid\":\"" + item.UPC;
+            parameters += "\",\"productname\":\"" + item.ProductName;
+            parameters += "\",\"description\":\"" + item.Description;
+            parameters += "\",\"imageurl\":\"" + item.ImageUrl;
+            parameters += "\",\"quantity\":\"" + item.Quantity + "\"}";
+
+            if (request.Post(url, parameters) != null)
+            {
+                return true;
+            }
+            ErrorMessage = request.GetLastErrorMessage();
+            return false;
+        }
+
+        /// <summary>
+        /// Add to user inventory with all parameters. Returns true on success. [deprecated]
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="upcCode"></param>
+        /// <param name="productName"></param>
+        /// <param name="productDesc"></param>
+        /// <param name="imageUrl"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        public bool AddToUserInventory(string upcCode, string productName, string productDesc, string imageUrl, int quantity)
         {
             string url = dbUrl + "adduserinv";
             string parameters;
             if (upcCode == "")
             {
                 int productId = 0;
-                while (ItemExistsInInventory(username, productId.ToString()))
+                while (ItemExistsInInventory(App.Username, productId.ToString()))
                 {
                     productId++;
                 }
@@ -102,7 +183,7 @@ namespace MobileApplication
                 imageUrl = "https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png";
             }
 
-            parameters = "{\"username\":\"" + username.ToUpper();
+            parameters = "{\"username\":\"" + App.Username.ToUpper();
             parameters += "\",\"scanid\":\"" + upcCode;
             parameters += "\",\"productname\":\"" + productName;
             parameters += "\",\"description\":\"" + productDesc;
@@ -117,6 +198,40 @@ namespace MobileApplication
             return false;
         }
 
+        public Item GetItemFromInventory(string upcCode)
+        {
+            string url = dbUrl + "getuserinv";
+            string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
+
+            string jsonInventory = request.Post(url, parameters);
+            if (jsonInventory != null)
+            {
+                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(jsonInventory);
+                string[,] inventory = new string[node["inventory"].Count, 5];
+                for (int i = 0; i < node["inventory"].Count; i++)
+                {
+                    SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["inventory"][i]);
+                    if (item["scanid"] == upcCode)
+                    {
+                        return new Item() {
+                            UPC = item["scanid"],
+                            ProductName = item["productname"],
+                            Description = item["description"],
+                            ImageUrl = item["imageurl"],
+                            Quantity = item["quantity"] };
+                    }
+                }
+            }
+            ErrorMessage = request.GetLastErrorMessage();
+            return null;
+        }
+
+        /// <summary>
+        /// Returns item data from user inventory. [deprecated]
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="upcCode"></param>
+        /// <returns></returns>
         public string[] GetItemFromInventory(string username, string upcCode)
         {
             string url = dbUrl + "getuserinv";
@@ -150,7 +265,7 @@ namespace MobileApplication
         }
         
         /// <summary>
-        /// Returns products in a 2 dimensional string array. Returns empty array upon error.
+        /// Returns inventory products in a 2 dimensional string array. Returns empty array upon error.
         /// </summary>
         /// <returns></returns>
         public string[,] GetUserInventory()
@@ -192,15 +307,109 @@ namespace MobileApplication
         }
         #endregion
 
+        #region Shopping List
+        //TODO: set up shopping list table in AWS DynamoDB, then uncomment code
+
+        public bool AddItemToShoppingList(Item item)
+        {
+            //string url = dbUrl + "addshoppinglist";
+            //string parameters;
+
+            //parameters = "{\"username\":\"" + App.Username.ToUpper();
+            //parameters += "\",\"scanid\":\"" + item.UPC;
+            //parameters += "\",\"productname\":\"" + item.ProductName;
+            //parameters += "\",\"description\":\"" + item.Description;
+            //parameters += "\",\"imageurl\":\"" + item.ImageUrl;
+            //parameters += "\",\"quantity\":\"" + item.Quantity + "\"}";
+
+            //if (request.Post(url, parameters) != null)
+            //{
+            //    return true;
+            //}
+            //ErrorMessage = request.GetLastErrorMessage();
+            return false;
+        }
+
+        public string[] GetItemFromShoppingList(string upcCode)
+        {
+            //string url = dbUrl + "getshoppinglist";
+            //string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
+
+            //string jsonShoppingList = request.Post(url, parameters);
+            //if (jsonShoppingList != null)
+            //{
+            //    SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(jsonShoppingList);
+            //    string[,] shoppingList = new string[node["shoppinglist"].Count, 5];
+            //    for (int i = 0; i < node["shoppinglist"].Count; i++)
+            //    {
+            //        SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["shoppinglist"][i]);
+            //        if (item["scanid"] == upcCode)
+            //        {
+            //            return new string[] { item["scanid"], item["productname"], item["description"], item["imageurl"], item["quantity"] };
+            //        }
+            //    }
+            //}
+            //ErrorMessage = request.GetLastErrorMessage();
+            return null;
+        }
+
+        public bool ItemExistsInShoppingList(string upcCode)
+        {
+            //if (GetItemFromShoppingList(upcCode) != null)
+            //{
+            //    return true;
+            //}
+            return false;
+        }
+
+        public string[,] GetUserShoppingList()
+        {
+        //    string url = dbUrl + "getshoppinglist";
+        //    string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
+
+        //    string jsonShoppingList = request.Post(url, parameters);
+        //    if (jsonShoppingList != null)
+        //    {
+        //        SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(jsonShoppingList);
+        //        string[,] shoppingList = new string[node["shoppinglist"].Count, 5];
+        //        for (int i = 0; i < node["shoppinglist"].Count; i++)
+        //        {
+        //            SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["shoppinglist"][i]);
+        //            shoppingList[i, 0] = item["scanid"];
+        //            shoppingList[i, 1] = item["productname"];
+        //            shoppingList[i, 2] = item["description"];
+        //            shoppingList[i, 3] = item["imageurl"];
+        //            shoppingList[i, 4] = item["quantity"];
+        //        }
+        //        return shoppingList;
+        //    }
+        //    ErrorMessage = request.GetLastErrorMessage();
+            return null;
+        }
+
+        public bool RemoveFromShoppingList(string upcCode)
+        {
+            //string url = dbUrl + "deleteShoppinglist";
+            //string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",\"scanid\":\"" + upcCode + "\"}";
+
+            //if (request.Post(url, parameters) != null)
+            //{
+            //    return true;
+            //}
+            //ErrorMessage = request.GetLastErrorMessage();
+            return false;
+        }
+        #endregion
+
         #region Products
         /// <summary>
         /// Returns a list of 6 products to choose from.
         /// </summary>
         /// <param name="keyword"></param>
         /// <returns></returns>
-        public string[] GetProductsByKeyword(string keyword)
+        public Product[] GetProductsByKeyword(string keyword)
         {
-            string[] products = new string[6];
+            Product[] products = new Product[6];
             try
             {
                 byte[] raw = client.DownloadData("https://api.barcodelookup.com/v2/products?search=" + keyword + ApiKey);
@@ -216,16 +425,43 @@ namespace MobileApplication
                         Weight = node["products"][i]["weight"]
                     };
                     product.Image = product.Image.Replace("http://", "https://");
+                    products[i] = product;
                 }
 
                 return products;
             }
             catch
             {
-                products[0] = "No results found.";
-                ErrorMessage = "No Results Found.";
-                return products;
+                ErrorMessage = "No Results Found. Try using a simpler search term. (i.e. \"chicken\", \"pork\" etc.)";
+                throw new Exception(ErrorMessage);
             }
+        }
+
+        /// <summary>
+        /// Returns a list of 6 image sources for 1 item.
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public string[] GetProductImagesByKeyword(string keyword)
+        {
+            Product[] products;
+            try
+            {
+                products = GetProductsByKeyword(keyword);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
+            return new string[] {
+                products[0].Image,
+                products[1].Image,
+                products[2].Image,
+                products[3].Image,
+                products[4].Image,
+                products[5].Image
+            };
         }
 
         /// <summary>
@@ -348,10 +584,15 @@ namespace MobileApplication
 
                 for (int hit = 0; hit < numRecipes; hit++)
                 {
+                    string calories = node["hits"][hit]["recipe"]["calories"];
+                    if (calories.Contains("."))
+                    {
+                        calories = calories.Split('.')[0];
+                    }
                     Recipe recipe = new Recipe(
                         node["hits"][hit]["recipe"]["label"],
                         node["hits"][hit]["recipe"]["source"],
-                        node["hits"][hit]["recipe"]["calories"]);
+                        calories);
                     recipe.AddImage(node["hits"][hit]["recipe"]["image"]);
                     recipe.AddURL(node["hits"][hit]["recipe"]["url"]);
                     recipe.AddTime(node["hits"][hit]["recipe"]["totalTime"]);
@@ -466,7 +707,8 @@ namespace MobileApplication
 
         private void AddCalories(string calories)
         {
-            this.Calories = int.Parse(calories).ToString();
+            int caloriesInt = int.Parse(calories);
+            this.Calories = caloriesInt.ToString();
         }
     }
 

@@ -12,7 +12,14 @@ namespace MobileApplication
             int count1 = cntFound(inventoryProducts, recipeIngredients);
             int count2 = cntFound(recipeIngredients, inventoryProducts);
             int count = count1 + count2;
-            score = count * 100 / 2 / recipeIngredients.Count;
+            if (recipeIngredients.Count > 0)
+            {
+                score = count * 100 / 2 / recipeIngredients.Count;
+            }
+            else
+            {
+                score = -1;
+            }
 
             return score;
         }

@@ -24,7 +24,7 @@ namespace MobileApplication.Views
             LabelStack.Children.Clear();
             foreach (Recipe rec in recipes)
             {
-                Button button = new Button { Text = rec.Label + "\nCalories: " + rec.Calories, ImageSource = rec.Image };
+                Button button = new Button { Text = rec.Label + "\nServings: " + rec.Servings, ImageSource = rec.Image };
                 LabelStack.Children.Add(button);
                 button.Clicked += OpenRecipePage;
             }
@@ -38,7 +38,7 @@ namespace MobileApplication.Views
 
             foreach (Recipe recipe in recipes)
             {
-                string recipeBtnLabel = recipe.Label + "\nCalories: " + recipe.Calories;
+                string recipeBtnLabel = recipe.Label + "\nServings: " + recipe.Servings;
                 if (recipeBtnLabel == buttonText)
                 {
                     thisRecipe = recipe;

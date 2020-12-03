@@ -8,6 +8,7 @@ using MobileApplication.ViewModels;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using Xamarin.Essentials;
 
 namespace MobileApplication.Views
 {
@@ -63,6 +64,11 @@ namespace MobileApplication.Views
             }
         }
 
+        private void CopyImageUrl_Clicked(object sender, EventArgs e)
+        {
+            Clipboard.SetTextAsync(viewModel.Item.ImageUrl);
+        }
+
         public async void DeleteItemWithSplashScreen()
         {
             loadingPage = new Loading(Loading.LoadType.SavingInventory);
@@ -104,7 +110,16 @@ namespace MobileApplication.Views
                 {
                     ingredients.Add(ing.text);
                 }
-                recipe.score = RecipeMatch.GetRecipeScore(new List<string>() { viewModel.Item.ProductName }, ingredients);
+                int recipeScore = RecipeMatch.GetRecipeScore(new List<string>() { viewModel.Item.ProductName }, ingredients);
+                if (recipeScore == -1)
+                {
+                    DisplayAlert("No Recipes Found!", "There were no recipes found containing the item you selected.", "OK");
+                    return;
+                }
+                else
+                {
+                    recipe.score = recipeScore;
+                }
             }
 
             if (recipes.Count > 0)
@@ -113,6 +128,11 @@ namespace MobileApplication.Views
             }
 
             Navigation.PushModalAsync(new SuggestedRecipes(recipes));
+        }
+
+        private void AddToShoppingList_Clicked(object sender, EventArgs e)
+        {
+
         }
     }
 }

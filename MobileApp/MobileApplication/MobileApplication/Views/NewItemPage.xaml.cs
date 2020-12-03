@@ -37,8 +37,7 @@ namespace MobileApplication.Views
 
         private void GetItem(Ingredient ing)
         {
-            db = new Database();            //Instantiate the database item to interact with the database
-
+            db = new Database();
             if (App.editingItem)
             {
                 Title = "Edit Item";
@@ -47,11 +46,18 @@ namespace MobileApplication.Views
             else
             {
                 Title = "New Item";
-                itemInfo[0] = "";
-                itemInfo[1] = "";
-                itemInfo[2] = "";
-                itemInfo[3] = "";
-                itemInfo[4] = "";
+                if (App.ScannedUPC != "")
+                {
+                    itemInfo = db.GetProductDataByUPC(App.ScannedUPC);
+                }
+                else
+                {
+                    itemInfo[0] = "";
+                    itemInfo[1] = "";
+                    itemInfo[2] = "";
+                    itemInfo[3] = "";
+                    itemInfo[4] = "1";
+                }
             }
 
             Item = new Item
@@ -88,6 +94,14 @@ namespace MobileApplication.Views
             AddItemWithSplashScreen();
         }
 
+        void SaveCustomUrl_Clicked(object sender, EventArgs e)
+        {
+            Item.ImageUrl = CustomImageUrl.Text;
+            ImageButton.ImageSource = Item.ImageUrl;
+            ImageSelection.IsVisible = false;
+            ImageDisplay.IsVisible = true;
+        }
+
         async void Cancel_Clicked(object sender, EventArgs e)
         {
             App.editingItem = false;
@@ -95,10 +109,71 @@ namespace MobileApplication.Views
             await Navigation.PopModalAsync();
         }
 
-        void Image_Clicked(object sender, EventArgs e)
+        void CancelImageChange_Clicked(object sender, EventArgs e)
         {
-            DisplayAlert("Choose an image...", "Hopefully an image here?", "Choose");
-            //ImageSelection.IsVisible
+            ImageSelection.IsVisible = false;
+            ImageDisplay.IsVisible = true;
+        }
+
+        async void Image_Clicked(object sender, EventArgs e)
+        {
+
+            string searchTerm = await DisplayPromptAsync("Edit Product Image", "Search for images based on keyword: ");
+            if (searchTerm == "")
+            {
+                searchTerm = Item.ProductName;
+            }
+            ImageSelection.IsVisible = true;
+            ImageDisplay.IsVisible = false;
+
+            string[] imageNames = new string[6];
+            try
+            {
+                imageNames = db.GetProductImagesByKeyword(searchTerm);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error!", ex.Message, "OK");
+                ImageSelection.IsVisible = false;
+                ImageDisplay.IsVisible = true;
+            }
+            
+            Image1.Source = imageNames[0];
+            Image2.Source = imageNames[1];
+            Image3.Source = imageNames[2];
+            Image4.Source = imageNames[3];
+            Image5.Source = imageNames[4];
+            Image6.Source = imageNames[5];
+        }
+
+        void NewImageSelected(object sender, EventArgs e)
+        {
+            Button clicked = (Button)sender;
+            Item.ImageUrl = GetSelectedImageSource(clicked);
+            ImageButton.ImageSource = Item.ImageUrl;
+            ImageSelection.IsVisible = false;
+            ImageDisplay.IsVisible = true;
+        }
+
+        string GetSelectedImageSource(Button clicked)
+        {
+            switch(clicked.Text)
+            {
+                case "1":
+                    return Image1.Source.ToString().Substring(5);
+                case "2":
+                    return Image2.Source.ToString().Substring(5);
+                case "3":
+                    return Image3.Source.ToString().Substring(5);
+                case "4":
+                    return Image4.Source.ToString().Substring(5);
+                case "5":
+                    return Image5.Source.ToString().Substring(5);
+                case "6":
+                    return Image6.Source.ToString().Substring(5);
+                default:
+                    return "Image Unavailable.";
+            }
         }
 
         public async void AddItemWithSplashScreen()
@@ -110,7 +185,14 @@ namespace MobileApplication.Views
             await Task.Run(() =>
             {
                 db = new Database();
-                if (db.AddToUserInventory(App.Username, Item.UPC, Item.ProductName, Item.Description, Item.ImageUrl, int.Parse(Quantity.Text)))
+                if (!App.editingItem)
+                {
+                    if (QuantitySelector.Value == 0)
+                    {
+                        QuantitySelector.Value = 1;
+                    }
+                }
+                if (db.AddToUserInventory(Item.UPC, Item.ProductName, Item.Description, Item.ImageUrl, int.Parse(QuantitySelector.Value.ToString())))
                 {
                     loadingPage.success = true;
                 }

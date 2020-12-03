@@ -36,19 +36,10 @@ namespace MobileApplication.Views
                 return;
             }
 
-            //results - when set up to return multiple results, go through this code for every (maxRecipes = 10) result
-            string res_label = recipes[0].Label;
-            string res_source = recipes[0].Source;
-            string res_img = recipes[0].Image;
-            string res_calories = recipes[0].Calories;
-            string res_url = recipes[0].Url; //need to attatch this to label hyperlink "See full recipe"
-
-            string ingr_1 = recipes[0].Ingredients[0].text;  //gets the text of the first ingredient from the first recipe
-
             LabelStack.Children.Clear();
             foreach(var rec in recipes)
             {
-                Button button = new Button { Text = rec.Label + "\nCalories: " + rec.Calories, ImageSource = rec.Image };
+                Button button = new Button { Text = rec.Label + "\nServings: " + rec.Servings, ImageSource = rec.Image };
                 LabelStack.Children.Add(button);
                 button.Clicked += OpenRecipePage;
             }
@@ -62,7 +53,7 @@ namespace MobileApplication.Views
 
             foreach (Recipe recipe in recipes)
             {
-                string recipeBtnLabel = recipe.Label + "\nCalories: " + recipe.Calories;
+                string recipeBtnLabel = recipe.Label + "\nServings: " + recipe.Servings;
                 if (recipeBtnLabel == buttonText)
                 {
                     thisRecipe = recipe;

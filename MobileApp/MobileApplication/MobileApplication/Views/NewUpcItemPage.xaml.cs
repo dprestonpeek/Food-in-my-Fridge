@@ -65,7 +65,14 @@ namespace MobileApplication.Views
                 db.RemoveFromUserInventory(App.Username, App.ScannedUPC);
                 App.editingItem = false;
             }
-            if (!db.AddToUserInventory(App.Username, Item.UPC, Item.ProductName, Item.Description, Item.ImageUrl, int.Parse(Quantity.Text)))
+            if (!App.editingItem)
+            {
+                if (QuantitySelector.Value == 0)
+                {
+                    QuantitySelector.Value = 1;
+                }
+            }
+            if (!db.AddToUserInventory(Item.UPC, Item.ProductName, Item.Description, Item.ImageUrl, int.Parse(QuantitySelector.Value.ToString())))
             {
                 await DisplayAlert("Error! Item not added to inventory", itemInfo[1], "OK");
             }
