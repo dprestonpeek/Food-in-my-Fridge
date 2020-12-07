@@ -210,7 +210,7 @@ namespace MobileApplication
                 string[,] inventory = new string[node["inventory"].Count, 5];
                 for (int i = 0; i < node["inventory"].Count; i++)
                 {
-                    SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["inventory"][i]);
+                    SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["inventory"][i].ToString());
                     if (item["scanid"] == upcCode)
                     {
                         return new Item() {
@@ -244,7 +244,7 @@ namespace MobileApplication
                 string[,] inventory = new string[node["inventory"].Count, 5];
                 for (int i = 0; i < node["inventory"].Count; i++)
                 {
-                    SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["inventory"][i]);
+                    SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["inventory"][i].ToString());
                     if (item["scanid"] == upcCode)
                     {
                         return new string[] { item["scanid"], item["productname"], item["description"], item["imageurl"], item["quantity"] };
@@ -280,7 +280,7 @@ namespace MobileApplication
                 string[,] inventory = new string[node["inventory"].Count, 5];
                 for (int i = 0; i < node["inventory"].Count; i++)
                 {
-                    SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["inventory"][i]);
+                    SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["inventory"][i].ToString());
                     inventory[i, 0] = item["scanid"];
                     inventory[i, 1] = item["productname"];
                     inventory[i, 2] = item["description"];
