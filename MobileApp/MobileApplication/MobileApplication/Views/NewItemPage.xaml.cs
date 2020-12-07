@@ -192,7 +192,8 @@ namespace MobileApplication.Views
                         QuantitySelector.Value = 1;
                     }
                 }
-                if (db.AddToUserInventory(Item.UPC, Item.ProductName, Item.Description, Item.ImageUrl, int.Parse(QuantitySelector.Value.ToString())))
+                Item.Quantity = QuantitySelector.Value.ToString();
+                if (db.AddToUserInventory(Item))
                 {
                     loadingPage.success = true;
                 }

@@ -10,7 +10,7 @@
             <Label Text="{Binding Item.ProductName}" FontSize="Small"/>
             <Label Text="Description:" FontSize="Medium" />
             <Label Text="{Binding Item.Description}" FontSize="Small"/>
-            <Label Text="UPC:" FontSize="Medium" />
+            <Label Text="UPC/Item ID:" FontSize="Medium" />
             <Label Text="{Binding Item.UPC}" FontSize="Small"/>
 
             <StackLayout Orientation="Horizontal" >

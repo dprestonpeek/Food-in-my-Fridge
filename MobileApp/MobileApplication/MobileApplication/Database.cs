@@ -90,7 +90,12 @@ namespace MobileApplication
         /// <returns></returns>
         public bool AddToUserInventory(string productName, string imageUrl)
         {
-            return AddToUserInventory("", productName, "", imageUrl, 1);
+            return AddToUserInventory(new Item() {
+                UPC = "",
+                ProductName = productName,
+                Description = "",
+                ImageUrl = imageUrl,
+                Quantity = "1" });
         }
 
         /// <summary>
@@ -528,7 +533,7 @@ namespace MobileApplication
             }
             catch
             {
-                productData[0] = "Barcode not recognized";
+                productData[0] = "";
                 productData[1] = "";
                 productData[2] = "";
                 productData[3] = "";
