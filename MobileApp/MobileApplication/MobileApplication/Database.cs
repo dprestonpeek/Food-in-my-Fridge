@@ -308,95 +308,119 @@ namespace MobileApplication
         #endregion
 
         #region Shopping List
-        //TODO: set up shopping list table in AWS DynamoDB, then uncomment code
 
         public bool AddItemToShoppingList(Item item)
         {
-            //string url = dbUrl + "addshoppinglist";
-            //string parameters;
+            string url = dbUrl + "addshoppinglist";
+            string parameters;
+            if (item.UPC == "")
+            {
+                int productId = 0;
+                while (ItemExistsInInventory(App.Username, productId.ToString()))
+                {
+                    productId++;
+                }
+                item.UPC = productId.ToString();
+            }
+            if (item.ProductName == "")
+            {
+                return false;
+            }
+            if (item.Description == "")
+            {
+                item.Description = "no description";
+            }
+            else if (item.Description.Length > 255)
+            {
+                item.Description = item.Description.Substring(0, 255);
+            }
+            if (item.ImageUrl == "")
+            {
+                item.ImageUrl = "https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png";
+            }
 
-            //parameters = "{\"username\":\"" + App.Username.ToUpper();
-            //parameters += "\",\"scanid\":\"" + item.UPC;
-            //parameters += "\",\"productname\":\"" + item.ProductName;
-            //parameters += "\",\"description\":\"" + item.Description;
-            //parameters += "\",\"imageurl\":\"" + item.ImageUrl;
-            //parameters += "\",\"quantity\":\"" + item.Quantity + "\"}";
+            parameters = "{\"username\":\"" + App.Username.ToUpper();
+            parameters += "\",\"scanid\":\"" + item.UPC;
+            parameters += "\",\"productname\":\"" + item.ProductName;
+            parameters += "\",\"description\":\"" + item.Description;
+            parameters += "\",\"imageurl\":\"" + item.ImageUrl;
+            parameters += "\",\"quantity\":\"" + item.Quantity + "\"}";
 
-            //if (request.Post(url, parameters) != null)
-            //{
-            //    return true;
-            //}
-            //ErrorMessage = request.GetLastErrorMessage();
+            if (request.Post(dbUrl, parameters) != null)
+            {
+                return true;
+            }
+            ErrorMessage = request.GetLastErrorMessage();
             return false;
         }
 
         public string[] GetItemFromShoppingList(string upcCode)
         {
-            //string url = dbUrl + "getshoppinglist";
-            //string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
+            string url = dbUrl + "getshoppinglist";
+            string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
 
-            //string jsonShoppingList = request.Post(url, parameters);
-            //if (jsonShoppingList != null)
-            //{
-            //    SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(jsonShoppingList);
-            //    string[,] shoppingList = new string[node["shoppinglist"].Count, 5];
-            //    for (int i = 0; i < node["shoppinglist"].Count; i++)
-            //    {
-            //        SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["shoppinglist"][i]);
-            //        if (item["scanid"] == upcCode)
-            //        {
-            //            return new string[] { item["scanid"], item["productname"], item["description"], item["imageurl"], item["quantity"] };
-            //        }
-            //    }
-            //}
-            //ErrorMessage = request.GetLastErrorMessage();
+            string jsonShoppingList = request.Post(url, parameters);
+            if (jsonShoppingList != null)
+            {
+                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(jsonShoppingList);
+                string[,] shoppingList = new string[node["shoppinglist"].Count, 5];
+                for (int i = 0; i < node["shoppinglist"].Count; i++)
+                {
+                    SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["shoppinglist"][i].ToString());
+                    if (item["scanid"] == upcCode)
+                    {
+                        return new string[] { item["scanid"], item["productname"], item["description"], item["imageurl"], item["quantity"] };
+                    }
+                }
+            }
+            ErrorMessage = request.GetLastErrorMessage();
             return null;
         }
 
         public bool ItemExistsInShoppingList(string upcCode)
         {
-            //if (GetItemFromShoppingList(upcCode) != null)
-            //{
-            //    return true;
-            //}
+            if (GetItemFromShoppingList(upcCode) != null)
+            {
+                return true;
+            }
             return false;
         }
 
         public string[,] GetUserShoppingList()
         {
-        //    string url = dbUrl + "getshoppinglist";
-        //    string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
+            string url = dbUrl + "getshoppinglist";
+            string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
 
-        //    string jsonShoppingList = request.Post(url, parameters);
-        //    if (jsonShoppingList != null)
-        //    {
-        //        SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(jsonShoppingList);
-        //        string[,] shoppingList = new string[node["shoppinglist"].Count, 5];
-        //        for (int i = 0; i < node["shoppinglist"].Count; i++)
-        //        {
-        //            SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["shoppinglist"][i]);
-        //            shoppingList[i, 0] = item["scanid"];
-        //            shoppingList[i, 1] = item["productname"];
-        //            shoppingList[i, 2] = item["description"];
-        //            shoppingList[i, 3] = item["imageurl"];
-        //            shoppingList[i, 4] = item["quantity"];
-        //        }
-        //        return shoppingList;
-        //    }
-        //    ErrorMessage = request.GetLastErrorMessage();
+            string jsonShoppingList = request.Post(url, parameters);
+            if (jsonShoppingList != null)
+            {
+                SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(jsonShoppingList);
+                string[,] shoppingList = new string[node["shoppinglist"].Count, 5];
+                for (int i = 0; i < node["shoppinglist"].Count; i++)
+                {
+                    SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["shoppinglist"][i].ToString());
+                    shoppingList[i, 0] = item["scanid"];
+                    shoppingList[i, 1] = item["productname"];
+                    shoppingList[i, 2] = item["description"];
+                    shoppingList[i, 3] = item["imageurl"];
+                    shoppingList[i, 4] = item["quantity"];
+                }
+                return shoppingList;
+            }
+            ErrorMessage = request.GetLastErrorMessage();
             return null;
         }
 
         public bool RemoveFromShoppingList(string upcCode)
         {
-            //string url = dbUrl + "deleteShoppinglist";
-            //string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",\"scanid\":\"" + upcCode + "\"}";
+            string url = dbUrl + "deleteshoppinglist";
+            string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",\"scanid\":\"" + upcCode + "\"}";
 
-            //if (request.Post(url, parameters) != null)
-            //{
-            //    return true;
-            //}
-            //ErrorMessage = request.GetLastErrorMessage();
+            if (request.Post(url, parameters) != null)
+            {
+                return true;
+            }
+            ErrorMessage = request.GetLastErrorMessage();
             return false;
         }
         #endregion
@@ -558,27 +582,66 @@ namespace MobileApplication
         #region Recipes
         public List<Recipe> GetRecipes(string keyword)
         {
-            return GetRecipes(keyword, new string[0], 10);
+            return GetRecipes(keyword, null, 10, null, null, -1, -1, -1);
         }
 
         public List<Recipe> GetRecipes(string keyword, int numRecipes)
         {
-            return GetRecipes(keyword, new string[0], numRecipes);
+            return GetRecipes(keyword, null, numRecipes, null, null, -1, -1, -1);
         }
 
-        private List<Recipe> GetRecipes(string keyword, string[] excluded, int numRecipes)
+        public List<Recipe> GetRecipes(string keyword, List<DietLabels> dietLabels, List<HealthLabels> healthLabels)
+        {
+            return GetRecipes(keyword, null, 10, dietLabels, healthLabels, -1, -1, -1);
+        }
+
+        public List<Recipe> GetRecipes(string keyword, string[] excluded, int numRecipes, List<DietLabels> dietLabels, List<HealthLabels> healthLabels, int maxIngr, int time, int numCalories)
         {
             List<Recipe> recipes = new List<Recipe>();
             string excludedString = "";
+            string dietString = "";
+            string healthString = "";
+            string maxIngrString = "";
+            string timeString = "";
+            string caloriesString = "";
 
-            foreach (string word in excluded)
+            if (excluded != null)
             {
-                excludedString += "&excluded=" + word;
+                foreach (string word in excluded)
+                {
+                    excludedString += "&excluded=" + word;
+                }
+            }
+            if (dietLabels != null)
+            {
+                foreach (DietLabels label in dietLabels)
+                {
+                    dietString += "&dietLabels=" + label;
+                }
+            }
+            if (healthLabels != null)
+            {
+                foreach (HealthLabels label in healthLabels)
+                {
+                    healthString += "&healthLabels=" + label;
+                }
+            }
+            if (maxIngr > -1)
+            {
+                maxIngrString = "&ingr=" + maxIngr;
+            }
+            if (time > -1)
+            {
+                timeString = "&time=" + time;
+            }
+            if (numCalories > -1)
+            {
+                caloriesString = "&calories=" + numCalories;
             }
 
             try
             {
-                byte[] raw = client.DownloadData("https://api.edamam.com/search?q=" + keyword + excludedString + "&to=" + numRecipes + "&app_id=b7f31416&app_key=aa8d1187795346e20ef1b7e187c3a362");
+                byte[] raw = client.DownloadData("https://api.edamam.com/search?q=" + keyword + excludedString + "&to=" + numRecipes + dietString + healthString + maxIngrString + timeString + caloriesString + "&app_id=b7f31416&app_key=aa8d1187795346e20ef1b7e187c3a362");
                 string data = Encoding.UTF8.GetString(raw);
                 SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(data);
 
@@ -641,6 +704,9 @@ namespace MobileApplication
         public string Quantity;
     }
 
+    public enum DietLabels { BALANCED, HIGHPROTEIN, LOWFAT, LOWCARB, LOWSODIUM }
+    public enum HealthLabels { VEGETARIAN, VEGAN, SUGARCONSCIOUS, PEANUTFREE, TREENUTFREE, ALCOHOLFREE }
+
     //The recipe object returned when GetRecipes() is called
     public class Recipe
     {
@@ -652,8 +718,9 @@ namespace MobileApplication
         public int Time;
         public int Servings;
         public List<Ingredient> Ingredients;
-        public string DietLabels;
-        public string HealthLabels;
+        public List<DietLabels> dietLabels { get; private set; }
+        public List<HealthLabels> healthLabels { get; private set; }
+        public string mealType;
         public int score;
 
         public Recipe()
@@ -666,6 +733,8 @@ namespace MobileApplication
             Time = 0;
             Servings = 0;
             Ingredients = new List<Ingredient>();
+            dietLabels = new List<DietLabels>();
+            healthLabels = new List<HealthLabels>();
         }
 
         public Recipe(string label, string source, string calories)
@@ -709,6 +778,16 @@ namespace MobileApplication
         {
             int caloriesInt = int.Parse(calories);
             this.Calories = caloriesInt.ToString();
+        }
+
+        private void AddDietLabel(DietLabels dietLabel)
+        {
+            dietLabels.Add(dietLabel);
+        }
+
+        private void AddHealthLabel(HealthLabels healthLabel)
+        {
+            healthLabels.Add(healthLabel);
         }
     }
 
