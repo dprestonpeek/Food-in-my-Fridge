@@ -44,17 +44,19 @@ namespace MobileApplication
 
         static bool findStrInStrVec(string searchStr, List<string> list)
         {
-            for (int i = 0; i < list.Count; i++)
+            foreach (string check in list)
             {
-                string check = list[i];
-                if (check.Contains(searchStr))
+                if (check != null)
                 {
-                    //cout << "Found at pos " << check.find(searchStr) << endl;	//find returns position it was found at
-                    return true;
-                }
-                else
-                {
-                    //find position returns random value if not found
+                    if (check.Contains(searchStr))
+                    {
+                        //cout << "Found at pos " << check.find(searchStr) << endl;	//find returns position it was found at
+                        return true;
+                    }
+                    else
+                    {
+                        //find position returns random value if not found
+                    }
                 }
             }
             return false;

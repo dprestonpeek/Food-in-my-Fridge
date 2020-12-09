@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApplication.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,13 @@ namespace MobileApplication.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ShoppingListDetail : ContentPage
 	{
-        ShoppingListItem shoppingListItem;
+        Item shoppingListItem;
 
-        public ShoppingListDetail (ShoppingListItem shoppingListItem)
+        public ShoppingListDetail (Item shoppingListItem)
 		{
 			InitializeComponent ();
             this.shoppingListItem = shoppingListItem;
-            shoppingListName.Text = shoppingListItem.Name;
+            shoppingListName.Text = shoppingListItem.ProductName;
             shoppingListImage.Source = shoppingListItem.ImageUrl;
             shoppingListDescription.Text = shoppingListItem.Description;
             shoppingListQuanity.Text = shoppingListItem.Quantity;

@@ -14,7 +14,7 @@ namespace MobileApplication.Views
     public partial class ShoppingList : ContentPage
     {
         Database db = new Database();
-        List <ShoppingListItem> shoppingList;
+        List <Item> shoppingList;
 
         public ShoppingList()
         {
@@ -26,9 +26,9 @@ namespace MobileApplication.Views
         {
             shoppingList = db.GetUserShoppingList();
             listStack.Children.Clear();
-            foreach (ShoppingListItem shoppingListItem in shoppingList)
+            foreach (Item shoppingListItem in shoppingList)
             {
-                Button button = new Button { Text = shoppingListItem.Name, ImageSource = shoppingListItem.ImageUrl, }; //0 = UPC code 1 = product name 2= description 3 = image url 4 = quanity 
+                Button button = new Button { Text = shoppingListItem.ProductName, ImageSource = shoppingListItem.ImageUrl, }; //0 = UPC code 1 = product name 2= description 3 = image url 4 = quanity 
                 listStack.Children.Add(button);
                 button.Clicked += OpenShoppingListItem;
             }
@@ -36,13 +36,13 @@ namespace MobileApplication.Views
 
         private void OpenShoppingListItem(object sender, EventArgs e)
         {
-            ShoppingListItem thisItem = null;
+            Item thisItem = null;
             Button button = (Button)sender;
             string buttonText = button.Text;
 
-            foreach (ShoppingListItem shoppingListItem in shoppingList)
+            foreach (Item shoppingListItem in shoppingList)
             {
-                string shoppingListButtonLabel = shoppingListItem.Name;
+                string shoppingListButtonLabel = shoppingListItem.ProductName;
                 if (shoppingListButtonLabel == buttonText)
                 {
                     thisItem = shoppingListItem;

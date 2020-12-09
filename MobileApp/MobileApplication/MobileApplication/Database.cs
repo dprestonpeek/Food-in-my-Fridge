@@ -130,7 +130,7 @@ namespace MobileApplication
             }
             if (item.ImageUrl == "")
             {
-                item.ImageUrl = "https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png";
+                item.ImageUrl = "http://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/scaleblack_orig.png";
             }
 
             parameters = "{\"username\":\"" + App.Username.ToUpper();
@@ -185,7 +185,7 @@ namespace MobileApplication
             }
             if (imageUrl == "")
             {
-                imageUrl = "https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png";
+                imageUrl = "http://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/scaleblack_orig.png";
             }
 
             parameters = "{\"username\":\"" + App.Username.ToUpper();
@@ -341,7 +341,7 @@ namespace MobileApplication
             }
             if (item.ImageUrl == "")
             {
-                item.ImageUrl = "https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png";
+                item.ImageUrl = "http://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/scaleblack_orig.png";
             }
 
             parameters = "{\"username\":\"" + App.Username.ToUpper();
@@ -391,7 +391,7 @@ namespace MobileApplication
             return false;
         }
 
-        public  List <ShoppingListItem> GetUserShoppingList()
+        public  List<Item> GetUserShoppingList()
         {
             string url = dbUrl + "getshoppinglist";
             string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
@@ -401,16 +401,16 @@ namespace MobileApplication
             {
                 SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(jsonShoppingList);
 
-                List<ShoppingListItem> shoppingList = new List<ShoppingListItem>();
+                List<Item> shoppingList = new List<Item>();
                 
                 for (int i = 0; i < node["shoppinglist"].Count; i++)
                 {
                     SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["shoppinglist"][i].ToString());
 
-                    ShoppingListItem shoppingListItem = new ShoppingListItem()
+                    Item shoppingListItem = new Item()
                     {
-                        UPCcode = item["scanid"],
-                        Name = item["productname"],
+                        UPC = item["scanid"],
+                        ProductName = item["productname"],
                         Description = item["description"],
                         ImageUrl = item["imageurl"],
                         Quantity = item["quantity"],
@@ -704,15 +704,6 @@ namespace MobileApplication
             }
         }
         #endregion
-    }
-
-    public class ShoppingListItem
-    {
-        public string UPCcode;
-        public string Name;
-        public string Description;
-        public string ImageUrl;
-        public string Quantity;
     }
 
     public class Product
