@@ -386,7 +386,7 @@ namespace MobileApplication
             return false;
         }
 
-        public string[,] GetUserShoppingList()
+        public  List <ShoppingListItem> GetUserShoppingList()
         {
             string url = dbUrl + "getshoppinglist";
             string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
@@ -395,15 +395,23 @@ namespace MobileApplication
             if (jsonShoppingList != null)
             {
                 SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse(jsonShoppingList);
-                string[,] shoppingList = new string[node["shoppinglist"].Count, 5];
+
+                List<ShoppingListItem> shoppingList = new List<ShoppingListItem>();
+                
                 for (int i = 0; i < node["shoppinglist"].Count; i++)
                 {
                     SimpleJSON.JSONNode item = SimpleJSON.JSON.Parse(node["shoppinglist"][i].ToString());
-                    shoppingList[i, 0] = item["scanid"];
-                    shoppingList[i, 1] = item["productname"];
-                    shoppingList[i, 2] = item["description"];
-                    shoppingList[i, 3] = item["imageurl"];
-                    shoppingList[i, 4] = item["quantity"];
+
+                    ShoppingListItem shoppingListItem = new ShoppingListItem()
+                    {
+                        UPCcode = item["scanid"],
+                        Name = item["productname"],
+                        Description = item["description"],
+                        ImageUrl = item["imageurl"],
+                        Quantity = item["quantity"],
+                    };
+             
+                    shoppingList.Add(shoppingListItem);
                 }
                 return shoppingList;
             }
@@ -691,6 +699,15 @@ namespace MobileApplication
             }
         }
         #endregion
+    }
+
+    public class ShoppingListItem
+    {
+        public string UPCcode;
+        public string Name;
+        public string Description;
+        public string ImageUrl;
+        public string Quantity;
     }
 
     public class Product

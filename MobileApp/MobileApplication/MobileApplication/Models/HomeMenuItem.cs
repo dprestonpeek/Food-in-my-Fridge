@@ -10,6 +10,7 @@ namespace MobileApplication.Models
         About,
         NewItem,
         Recipes,
+        ShoppingList,
         Logout
     }
     public class HomeMenuItem
