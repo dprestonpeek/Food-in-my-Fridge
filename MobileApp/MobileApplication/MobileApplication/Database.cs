@@ -78,6 +78,17 @@ namespace MobileApplication
             }
             return false;
         }
+
+        public bool WarmupServer()
+        {
+            string url = dbUrl + "warmupserver";
+            if (request.Post(url, "") == null)
+            {
+                return true;
+            }
+            ErrorMessage = "Unable to warm up server";
+            return false;
+        }
         #endregion
 
         #region Inventory
@@ -639,6 +650,7 @@ namespace MobileApplication
                     healthString += "&healthLabels=" + label;
                 }
             }
+            //-1 is "null" value
             if (maxIngr > -1)
             {
                 maxIngrString = "&ingr=" + maxIngr;
@@ -704,6 +716,27 @@ namespace MobileApplication
             }
         }
         #endregion
+    }
+
+    public class User
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+        public User(string username, string password)
+        {
+            Username = username;
+            Password = password;
+        }
+    }
+
+    public class Item
+    {
+        public string UPC { get; set; }
+        public string ProductName { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
+        public string Quantity { get; set; }
     }
 
     public class Product
@@ -773,8 +806,10 @@ namespace MobileApplication
             {
                 Ingredients = new List<Ingredient>();
             }
-
-            Ingredients.Add(newIngredient);
+            if (newIngredient.text != "" || newIngredient.text != null)
+            {
+                Ingredients.Add(newIngredient);
+            }
         }
 
         public void AddTime(int time)

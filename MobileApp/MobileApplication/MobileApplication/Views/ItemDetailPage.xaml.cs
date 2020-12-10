@@ -102,7 +102,7 @@ namespace MobileApplication.Views
         {
             List<Ingredient> recipeIng = new List<Ingredient>();
             List<string> ingredients = new List<string>();
-            List<Recipe> recipes = db.GetRecipes(viewModel.Item.ProductName, 3);
+            List<Recipe> recipes = db.GetRecipes(viewModel.Item.ProductName, 5); //5 is number of recipes returned on a recipe suggestion
 
             foreach (Recipe recipe in recipes)
             {

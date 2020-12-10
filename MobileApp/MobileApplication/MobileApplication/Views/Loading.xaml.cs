@@ -15,7 +15,7 @@ namespace MobileApplication.Views
         public bool IsLoading { get; set; }
         public bool success = false;
 
-        public enum LoadType { LogginIn, SavingInventory, SearchingRecipes}
+        public enum LoadType { CheckingCredentials, LoggingIn, CreatingAccount, SavingInventory, SearchingRecipes}
         LoadType loadType;
         public Object Result;
 
@@ -23,15 +23,21 @@ namespace MobileApplication.Views
         {
             InitializeComponent();
             loadType = theLoadType;
-            ChangeLoadingScreen();
+            ChangeLoadingScreen(theLoadType);
         }
 
-        public void ChangeLoadingScreen()
+        public void ChangeLoadingScreen(LoadType theLoadType)
         {
-            switch(loadType)
+            switch(theLoadType)
             {
-                case LoadType.LogginIn:
+                case LoadType.CheckingCredentials:
                     loadText.Text = "\n\n\n\nChecking your credentials...";
+                    break;
+                case LoadType.LoggingIn:
+                    loadText.Text = "\n\n\n\nLogging you in...";
+                    break;
+                case LoadType.CreatingAccount:
+                    loadText.Text = "\n\n\n\nCreating your account...";
                     break;
                 case LoadType.SavingInventory:
                     loadText.Text = "\n\n\n\nSaving your inventory...";

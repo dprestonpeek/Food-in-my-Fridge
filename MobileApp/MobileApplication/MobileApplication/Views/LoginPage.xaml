@@ -3,16 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApplication.Views.LoginPage">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Spacing="10">
-            <Image HorizontalOptions="CenterAndExpand" Source="https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png"></Image>
-            <Label Text="Log In" FontSize="28" HorizontalTextAlignment="Center"/>
-            <Label Text="Username:" />
-            <Entry Placeholder="Username" x:Name="username"/>
-            <Label Text="Password:"/>
-            <Entry Placeholder="Password" x:Name="password" IsPassword="True"/>
-            <Button Clicked="SignIn" Text="Login" />
-            <Frame BackgroundColor="Transparent" BorderColor="Transparent" OutlineColor="Transparent"  HeightRequest="30"/>
-            <Button Clicked="CreateAccount" Text="Create Account Instead"/>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Spacing="10">
+                <Image HorizontalOptions="CenterAndExpand" Source="https://prestonpeek.weebly.com/uploads/2/2/4/9/22497912/foodinmyfridge_orig.png"></Image>
+                <Label Text="Log In" FontSize="28" HorizontalTextAlignment="Center"/>
+                <Label Text="Username:" />
+                <Entry Placeholder="Username" x:Name="username"/>
+                <Label Text="Password:"/>
+                <Entry Placeholder="Password" x:Name="password" IsPassword="True"/>
+                <Button Clicked="SignIn" Text="Login" />
+                <Frame BackgroundColor="Transparent" BorderColor="Transparent" OutlineColor="Transparent"  HeightRequest="30"/>
+                <Button Clicked="CreateAccount" Text="Create Account Instead"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

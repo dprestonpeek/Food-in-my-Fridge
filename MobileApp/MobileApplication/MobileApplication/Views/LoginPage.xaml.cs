@@ -14,10 +14,13 @@ namespace MobileApplication.Views
 	public partial class LoginPage : ContentPage
 	{
         Loading loadingPage;
+        Database db;
 
         public LoginPage ()
 		{
 			InitializeComponent ();
+            db = new Database();
+            db.WarmupServer();
         }
 
         void SignIn(object sender, EventArgs e)
@@ -38,13 +41,12 @@ namespace MobileApplication.Views
                 App.Password = password.Text;
                 return true;
             }
-            loadingPage.IsLoading = false;
             return false;
         }
 
         private async void LoginWithSplashScreen()
         {
-            loadingPage = new Loading(Loading.LoadType.LogginIn);
+            loadingPage = new Loading(Loading.LoadType.LoggingIn);
             await Navigation.PushModalAsync(loadingPage);
             loadingPage.IsLoading = true;
 
@@ -60,6 +62,7 @@ namespace MobileApplication.Views
                     loadingPage.Result = false;
                     loadingPage.success = false;
                 }
+                loadingPage.IsLoading = false;
             });
 
             if (loadingPage.success)

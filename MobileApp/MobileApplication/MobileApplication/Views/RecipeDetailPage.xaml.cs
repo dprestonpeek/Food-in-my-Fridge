@@ -28,12 +28,27 @@ namespace MobileApplication.Views
 
         private void ShowIngredients_Clicked(object sender, EventArgs e)
         {
-            LabelStack.Children.Clear();
-            foreach (Ingredient ing in recipe.Ingredients)
+            if (ShowIngredients.Text == "Show Ingredients")
             {
-                Button button = new Button { Text = ing.text, ImageSource = ing.image };
-                LabelStack.Children.Add(button);
-                button.Clicked += ShowIngredientOptions;
+                if (LabelStack.Children.Count > 0)
+                {
+                    LabelStack.IsVisible = true;
+                }
+                else
+                {
+                    foreach (Ingredient ing in recipe.Ingredients)
+                    {
+                        Button button = new Button { Text = ing.text, ImageSource = ing.image };
+                        LabelStack.Children.Add(button);
+                        button.Clicked += ShowIngredientOptions;
+                    }
+                }
+                ShowIngredients.Text = "Hide Ingredients";
+            }
+            else if (ShowIngredients.Text == "Hide Ingredients")
+            {
+                LabelStack.IsVisible = false;
+                ShowIngredients.Text = "Show Ingredients";
             }
         }
 

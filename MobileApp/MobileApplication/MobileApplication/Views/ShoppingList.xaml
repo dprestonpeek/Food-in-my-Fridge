@@ -4,11 +4,13 @@
              x:Class="MobileApplication.Views.ShoppingList"
              Title="Shopping List">
     <ContentPage.Content>
-        <StackLayout>
-            
-            <StackLayout x:Name="listStack">
-                
+        <ScrollView>
+            <StackLayout>
+
+                <StackLayout x:Name="listStack">
+
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

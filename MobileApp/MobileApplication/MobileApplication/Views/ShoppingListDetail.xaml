@@ -3,27 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApplication.Views.ShoppingListDetail">
     <ContentPage.Content>
-        <StackLayout>
-            <Image x:Name="shoppingListImage"
-                   Source="ImageSource"
-                   HorizontalOptions="FillAndExpand"
-                   VerticalOptions="FillAndExpand"
-                   />
-            <Label x:Name="shoppingListName"
-                Text="Recipe Label"
-                VerticalOptions="Center" 
-                HorizontalOptions="CenterAndExpand" 
-                FontSize="24"/>
-            <Label x:Name="shoppingListDescription"
-                Text="Retrieved From: "
-                VerticalOptions="Center" 
-                HorizontalOptions="CenterAndExpand" 
-                FontSize="18"/>
-            <Label x:Name="shoppingListQuanity"
-                Text="Servings: "
-                VerticalOptions="Center" 
-                HorizontalOptions="CenterAndExpand" 
-                FontSize="18"/>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <Image x:Name="shoppingListImage"
+                       Source="ImageSource"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"
+                       />
+                <Label x:Name="shoppingListName"
+                    Text="Recipe Label"
+                    VerticalOptions="Center" 
+                    HorizontalOptions="CenterAndExpand" 
+                    FontSize="24"/>
+                <Label x:Name="shoppingListDescription"
+                    Text="Retrieved From: "
+                    VerticalOptions="Center" 
+                    HorizontalOptions="CenterAndExpand" 
+                    FontSize="18"/>
+                <Label x:Name="shoppingListQuanity"
+                    Text="Servings: "
+                    VerticalOptions="Center" 
+                    HorizontalOptions="CenterAndExpand" 
+                    FontSize="18"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
