@@ -15,7 +15,8 @@ namespace MobileApplication.Views
 		public FrontPage ()
 		{
 			InitializeComponent ();
-		}
+            new Database().WarmupServer();
+        }
 
         void NaviagteToLoginPage(object sender, EventArgs e)
         {

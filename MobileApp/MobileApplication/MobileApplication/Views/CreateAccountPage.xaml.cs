@@ -19,7 +19,6 @@ namespace MobileApplication.Views
 		{
 			InitializeComponent();
             db = new Database();
-            db.WarmupServer();
         }
 
         private void CreateAccount(object sender, EventArgs e)
@@ -31,7 +30,7 @@ namespace MobileApplication.Views
         {
             if (username.Text != "" && password.Text != "")
             {
-                if (new Database().UserRegister(username.Text, password.Text))
+                if (db.UserRegister(username.Text, password.Text))
                 {
                     App.Username = username.Text;
                     App.Password = password.Text;

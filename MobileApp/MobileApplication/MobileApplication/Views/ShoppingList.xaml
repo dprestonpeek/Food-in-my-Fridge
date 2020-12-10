@@ -6,8 +6,11 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-
-                <StackLayout x:Name="listStack">
+                <StackLayout x:Name="ChooseShoppingList">
+                    <Button Text="My Shopping List" Clicked="OpenMyShoppingList"></Button>
+                    <Button Text="Other User's Shopping List" Clicked="SpecifyUserShoppingList"></Button>
+                </StackLayout>
+                <StackLayout x:Name="userShoppingList">
 
                 </StackLayout>
             </StackLayout>

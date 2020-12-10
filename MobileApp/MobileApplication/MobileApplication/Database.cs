@@ -79,6 +79,17 @@ namespace MobileApplication
             return false;
         }
 
+        public bool UserExists(string username)
+        {
+            string url = dbUrl + "doesusernameexist";
+            string parameters = "{\"username\":\"" + username.ToUpper() + "\",}";
+            if (request.Post(url, parameters) != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool WarmupServer()
         {
             string url = dbUrl + "warmupserver";
@@ -402,10 +413,10 @@ namespace MobileApplication
             return false;
         }
 
-        public  List<Item> GetUserShoppingList()
+        public  List<Item> GetUserShoppingList(string username)
         {
             string url = dbUrl + "getshoppinglist";
-            string parameters = "{\"username\":\"" + App.Username.ToUpper() + "\",}";
+            string parameters = "{\"username\":\"" + username.ToUpper() + "\",}";
 
             string jsonShoppingList = request.Post(url, parameters);
             if (jsonShoppingList != null)

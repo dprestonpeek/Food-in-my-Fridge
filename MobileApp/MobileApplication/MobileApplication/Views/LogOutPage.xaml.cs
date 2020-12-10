@@ -26,8 +26,8 @@ namespace MobileApplication.Views
 
         private void Logout(object sender, EventArgs e)
         {
-            App.Username = "";
-            App.Password = "";
+            App.Username = null;
+            App.Password = null;
             Application.Current.MainPage = new LoginPage();
         }
     }

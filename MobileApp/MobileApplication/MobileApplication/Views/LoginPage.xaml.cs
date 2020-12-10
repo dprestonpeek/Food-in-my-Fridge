@@ -20,7 +20,6 @@ namespace MobileApplication.Views
 		{
 			InitializeComponent ();
             db = new Database();
-            db.WarmupServer();
         }
 
         void SignIn(object sender, EventArgs e)
@@ -35,7 +34,7 @@ namespace MobileApplication.Views
 
         private bool VerifyLogin()
         {
-            if (new Database().UserLogin(username.Text, password.Text))
+            if (db.UserLogin(username.Text, password.Text))
             {
                 App.Username = username.Text;
                 App.Password = password.Text;
