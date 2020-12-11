@@ -5,26 +5,47 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Image x:Name="shoppingListImage"
+                <Image x:Name="ProductImage"
                        Source="ImageSource"
-                       HorizontalOptions="FillAndExpand"
-                       VerticalOptions="FillAndExpand"
+                       HorizontalOptions="Center"
                        />
-                <Label x:Name="shoppingListName"
-                    Text="Recipe Label"
-                    VerticalOptions="Center" 
-                    HorizontalOptions="CenterAndExpand" 
-                    FontSize="24"/>
-                <Label x:Name="shoppingListDescription"
-                    Text="Retrieved From: "
-                    VerticalOptions="Center" 
-                    HorizontalOptions="CenterAndExpand" 
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Product Name: "
+                    HorizontalOptions="Start" 
                     FontSize="18"/>
-                <Label x:Name="shoppingListQuanity"
-                    Text="Servings: "
-                    VerticalOptions="Center" 
-                    HorizontalOptions="CenterAndExpand" 
+                    <Label x:Name="ProductName"
+                    Text=""
+                    HorizontalOptions="Start" 
                     FontSize="18"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Product Description: "
+                    HorizontalOptions="Start" 
+                    FontSize="18"/>
+                    <Label x:Name="ProductDesc"
+                    Text=""
+                    HorizontalOptions="Start" 
+                    FontSize="18"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Product UPC: "
+                    HorizontalOptions="Start" 
+                    FontSize="18"/>
+                    <Label x:Name="ProductUPC"
+                    Text=""
+                    HorizontalOptions="Start" 
+                    FontSize="18"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Quantity: "
+                    HorizontalOptions="Start" 
+                    FontSize="18"/>
+                    <Label x:Name="ProductQuantity"
+                    Text=""
+                    HorizontalOptions="Start" 
+                    FontSize="18"/>
+                </StackLayout>
+                <Button x:Name="DeleteItemBtn" Text="Delete Item" Clicked="DeleteItem"></Button>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

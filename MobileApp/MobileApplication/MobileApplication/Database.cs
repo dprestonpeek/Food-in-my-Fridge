@@ -373,7 +373,7 @@ namespace MobileApplication
             parameters += "\",\"imageurl\":\"" + item.ImageUrl;
             parameters += "\",\"quantity\":\"" + item.Quantity + "\"}";
 
-            if (request.Post(dbUrl, parameters) != null)
+            if (request.Post(url, parameters) != null)
             {
                 return true;
             }

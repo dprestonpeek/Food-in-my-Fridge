@@ -10,9 +10,6 @@
                     <Button Text="My Shopping List" Clicked="OpenMyShoppingList"></Button>
                     <Button Text="Other User's Shopping List" Clicked="SpecifyUserShoppingList"></Button>
                 </StackLayout>
-                <StackLayout x:Name="userShoppingList">
-
-                </StackLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

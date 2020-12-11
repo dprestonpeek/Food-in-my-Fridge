@@ -17,11 +17,21 @@ namespace MobileApplication.Views
         private string[] itemInfo = new string[5] { "", "", "", "", "" };
         Loading loadingPage;
         Database db;
+        bool shoppingListItem = false;
+        List<Item> shoppingList;
 
         public NewItemPage(Ingredient ing)
         {
             InitializeComponent();
             GetItem(ing);
+        }
+
+        public NewItemPage(List<Item> shoppingList)
+        {
+            InitializeComponent();
+            shoppingListItem = true;
+            this.shoppingList = shoppingList;
+            GetItem(null);
         }
 
         public NewItemPage()
@@ -38,6 +48,7 @@ namespace MobileApplication.Views
         private void GetItem(Ingredient ing)
         {
             db = new Database();
+
             if (App.editingItem)
             {
                 Title = "Edit Item";
@@ -85,13 +96,26 @@ namespace MobileApplication.Views
 
         void Save_Clicked(object sender, EventArgs e)
         {
-            if (App.editingItem)
+            if (shoppingListItem)
             {
-                db.RemoveFromUserInventory(App.Username, App.ScannedUPC);
-                App.editingItem = false;
-            }
+                if (App.editingItem)
+                {
+                    db.RemoveFromShoppingList(App.ScannedUPC);
+                    App.editingItem = false;
+                }
 
-            AddItemWithSplashScreen();
+                AddItemWithSplashScreen();
+            }
+            else
+            {
+                if (App.editingItem)
+                {
+                    db.RemoveFromUserInventory(App.Username, App.ScannedUPC);
+                    App.editingItem = false;
+                }
+
+                AddItemWithSplashScreen();
+            }
         }
 
         void SaveCustomUrl_Clicked(object sender, EventArgs e)
@@ -178,7 +202,14 @@ namespace MobileApplication.Views
 
         public async void AddItemWithSplashScreen()
         {
-            loadingPage = new Loading(Loading.LoadType.SavingInventory);
+            if (shoppingListItem)
+            {
+                loadingPage = new Loading(Loading.LoadType.ShoppingListSave);
+            }
+            else
+            {
+                loadingPage = new Loading(Loading.LoadType.SavingInventory);
+            }
             await Navigation.PushModalAsync(loadingPage);
             loadingPage.IsLoading = true;
 
@@ -193,24 +224,54 @@ namespace MobileApplication.Views
                     }
                 }
                 Item.Quantity = QuantitySelector.Value.ToString();
-                if (db.AddToUserInventory(Item))
+                if (shoppingListItem)
                 {
-                    loadingPage.success = true;
+                    if (db.AddItemToShoppingList(Item))
+                    {
+                        loadingPage.success = true;
+                    }
+                    else
+                    {
+                        loadingPage.success = false;
+                    }
                 }
                 else
                 {
-                    loadingPage.success = false;
+                    if (db.AddToUserInventory(Item))
+                    {
+                        loadingPage.success = true;
+                    }
+                    else
+                    {
+                        loadingPage.success = false;
+                    }
                 }
             });
 
-            if (loadingPage.success)
+            if (shoppingListItem)
             {
-                Application.Current.MainPage = new MainPage();
+                if (loadingPage.success)
+                {
+                    await Navigation.PopModalAsync();
+                    await Navigation.PopModalAsync();
+                }
+                else
+                {
+                    await Navigation.PopModalAsync();
+                    await DisplayAlert("Shopping List Save Failed", "Item " + itemInfo[1] + " not added to shopping list", "OK");
+                }
             }
             else
             {
-                await Navigation.PopModalAsync();
-                await DisplayAlert("Inventory Save Failed", "Item " + itemInfo[1] + " not added to inventory", "OK");
+                if (loadingPage.success)
+                {
+                    Application.Current.MainPage = new MainPage();
+                }
+                else
+                {
+                    await Navigation.PopModalAsync();
+                    await DisplayAlert("Inventory Save Failed", "Item " + itemInfo[1] + " not added to inventory", "OK");
+                }
             }
         }
     }

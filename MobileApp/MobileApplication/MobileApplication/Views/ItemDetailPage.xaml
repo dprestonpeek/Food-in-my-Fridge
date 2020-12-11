@@ -3,6 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApplication.Views.ItemDetailPage"
              Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="ButtonDeleteItem" Text="Delete" Clicked="ButtonDeleteItem_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="cancel.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ButtonEditItem" Text="Edit" Clicked="ButtonEditItem_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="save.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ScrollView>
         <StackLayout Spacing="20" Padding="15">
             <Image HorizontalOptions="CenterAndExpand" Source="{Binding Item.ImageUrl}"></Image>
@@ -25,10 +41,6 @@
             <Button x:Name="SuggestRecipes" Text="Suggest Recipes with this product" Clicked="SuggestRecipes_Clicked"/>
             <Button Text="Copy Image URL" Clicked="CopyImageUrl_Clicked"/>
             <Button Text="Add Item to Shopping List" Clicked="AddToShoppingList_Clicked"/>
-            <StackLayout Orientation="Horizontal">
-                <Button x:Name="ButtonEditItem" Text="Edit Item"/>
-                <Button x:Name="ButtonDeleteItem" Text="Delete Item" BackgroundColor="DarkGray"/>
-            </StackLayout>
         </StackLayout>
     </ScrollView>
 </ContentPage>

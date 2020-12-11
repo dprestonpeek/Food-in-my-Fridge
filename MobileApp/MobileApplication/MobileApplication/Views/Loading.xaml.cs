@@ -15,7 +15,7 @@ namespace MobileApplication.Views
         public bool IsLoading { get; set; }
         public bool success = false;
 
-        public enum LoadType { CheckingCredentials, LoggingIn, CreatingAccount, SavingInventory, SearchingRecipes, ShoppingList}
+        public enum LoadType { CheckingCredentials, LoggingIn, CreatingAccount, SavingInventory, SearchingRecipes, ShoppingListGet, ShoppingListSave }
         LoadType loadType;
         public Object Result;
 
@@ -45,8 +45,11 @@ namespace MobileApplication.Views
                 case LoadType.SearchingRecipes:
                     loadText.Text = "\n\n\n\nSearching Recipes...";
                     break;
-                case LoadType.ShoppingList:
+                case LoadType.ShoppingListGet:
                     loadText.Text = "\n\n\n\nRetrieving Shopping List...";
+                    break;
+                case LoadType.ShoppingListSave:
+                    loadText.Text = "\n\n\n\nSaving shopping list...";
                     break;
             }
         }

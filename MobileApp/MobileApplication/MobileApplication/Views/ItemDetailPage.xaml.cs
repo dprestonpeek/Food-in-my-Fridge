@@ -24,8 +24,6 @@ namespace MobileApplication.Views
         {
             InitializeComponent();
             db = new Database();
-            ButtonEditItem.Clicked += ButtonEditItem_Clicked;
-            ButtonDeleteItem.Clicked += ButtonDeleteItem_Clicked;
             BindingContext = this.viewModel = viewModel;
 
             this.inventoryItems = new List<string>();
@@ -33,19 +31,6 @@ namespace MobileApplication.Views
             {
                 this.inventoryItems.Add(item.ProductName);
             }
-        }
-
-        public ItemDetailPage()
-        {
-            InitializeComponent();
-            var item = new Item
-            {
-                ProductName = "Item 1",
-                Description = "This is an item description.",
-            };
-
-            viewModel = new ItemDetailViewModel(item);
-            BindingContext = viewModel;
         }
 
         private void ButtonEditItem_Clicked(object sender, EventArgs e)
@@ -132,7 +117,40 @@ namespace MobileApplication.Views
 
         private void AddToShoppingList_Clicked(object sender, EventArgs e)
         {
+            AddToShoppingListWithSplashScreen(App.Username);
+        }
 
+        private async void AddToShoppingListWithSplashScreen(string username)
+        {
+            loadingPage = new Loading(Loading.LoadType.ShoppingListSave);
+            await Navigation.PushModalAsync(loadingPage);
+            loadingPage.IsLoading = true;
+
+            await Task.Run(() =>
+            {
+                if (db.AddItemToShoppingList(viewModel.Item))
+                {
+                    loadingPage.Result = true;
+                    loadingPage.success = true;
+                }
+                else
+                {
+                    loadingPage.Result = false;
+                    loadingPage.success = false;
+                }
+                loadingPage.IsLoading = false;
+            });
+
+            if (loadingPage.success)
+            {
+                await Navigation.PopModalAsync();
+                await DisplayAlert("Item Added!", "Added " + viewModel.Item.ProductName + " to shopping list.", "OK");
+            }
+            else
+            {
+                await Navigation.PopModalAsync();
+                await DisplayAlert("Shopping List Error!", "Unable to add " + viewModel.Item.ProductName + " to shopping list.", "OK");
+            }
         }
     }
 }
