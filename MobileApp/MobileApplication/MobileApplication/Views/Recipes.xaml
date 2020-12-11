@@ -5,9 +5,44 @@
   <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Entry Placeholder="search" x:Name="item"/>
-                <Button x:Name="searchbtn" Text="Search for Recipes By Keyword" Clicked="SearchBtn_Clicked"/>
+                <Entry Placeholder="Enter keyword to search recipes..." x:Name="Keyword"/>
+                <StackLayout Padding="10">
+                    <Label Text="Diet Labels: " FontSize="16"></Label>
+                    <StackLayout Orientation="Horizontal">
+                        <CheckBox x:Name="BalancedCheck"></CheckBox>
+                        <Label Text="Balanced" VerticalOptions="Center"></Label>
+                        <CheckBox x:Name="HighProteinCheck"></CheckBox>
+                        <Label Text="High Protein" VerticalOptions="Center"></Label>
+                        <CheckBox x:Name="LowFatCheck"></CheckBox>
+                        <Label Text="Low Fat" VerticalOptions="Center"></Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <CheckBox x:Name="LowCarbCheck"></CheckBox>
+                        <Label Text="Low Carb" VerticalOptions="Center"></Label>
+                        <CheckBox x:Name="LowSodiumCheck"></CheckBox>
+                        <Label Text="Low Sodium" VerticalOptions="Center"></Label>
+                    </StackLayout>
 
+                    <Label Text="Heatlh Labels: " FontSize="16"></Label>
+                    <StackLayout Orientation="Horizontal">
+                        <CheckBox x:Name="VegetarianCheck"></CheckBox>
+                        <Label Text="Vegetarian" VerticalOptions="Center"></Label>
+                        <CheckBox x:Name="VeganCheck"></CheckBox>
+                        <Label Text="Vegan" VerticalOptions="Center"></Label>
+                        <CheckBox x:Name="PeanutFreeCheck"></CheckBox>
+                        <Label Text="Peanut Free" VerticalOptions="Center"></Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <CheckBox x:Name="TreeNutFreeCheck"></CheckBox>
+                        <Label Text="Tree Nut Free" VerticalOptions="Center"></Label>
+                        <CheckBox x:Name="AlcoholFreeCheck"></CheckBox>
+                        <Label Text="Alcohol Free" VerticalOptions="Center"></Label>
+                    </StackLayout>
+
+                    <Label Text="Anti-Keywords: "></Label>
+                    <Entry Placeholder="Enter anti-keywords (separated by commas)..." x:Name="AntiKeywords"/>
+                </StackLayout>
+                <Button x:Name="searchbtn" Text="Search Recipes" Clicked="SearchBtn_Clicked"/>
                 <StackLayout  x:Name="LabelStack">
                   <!-- Where recipes go -->
           

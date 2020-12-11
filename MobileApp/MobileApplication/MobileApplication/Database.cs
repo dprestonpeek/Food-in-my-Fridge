@@ -625,12 +625,12 @@ namespace MobileApplication
             return GetRecipes(keyword, null, numRecipes, null, null, -1, -1, -1);
         }
 
-        public List<Recipe> GetRecipes(string keyword, List<DietLabels> dietLabels, List<HealthLabels> healthLabels)
+        public List<Recipe> GetRecipes(string keyword, string[] antikeywords, List<DietLabels> dietLabels, List<HealthLabels> healthLabels)
         {
             return GetRecipes(keyword, null, 10, dietLabels, healthLabels, -1, -1, -1);
         }
 
-        public List<Recipe> GetRecipes(string keyword, string[] excluded, int numRecipes, List<DietLabels> dietLabels, List<HealthLabels> healthLabels, int maxIngr, int time, int numCalories)
+        public List<Recipe> GetRecipes(string keyword, string[] antikeywords, int numRecipes, List<DietLabels> dietLabels, List<HealthLabels> healthLabels, int maxIngr, int time, int numCalories)
         {
             List<Recipe> recipes = new List<Recipe>();
             string excludedString = "";
@@ -640,11 +640,20 @@ namespace MobileApplication
             string timeString = "";
             string caloriesString = "";
 
-            if (excluded != null)
+            if (antikeywords != null)
             {
-                foreach (string word in excluded)
+                foreach (string word in antikeywords)
                 {
-                    excludedString += "&excluded=" + word;
+                    string modWord = word;
+                    if (modWord[0] == ' ')
+                    {
+                        modWord = word.Substring(1);
+                    }
+                    if (modWord[modWord.Length - 1] == ' ')
+                    {
+                        modWord = word.Substring(0, modWord.Length - 2);
+                    }
+                    excludedString += "&excluded=" + modWord;
                 }
             }
             if (dietLabels != null)

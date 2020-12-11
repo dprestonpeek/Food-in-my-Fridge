@@ -26,9 +26,65 @@ namespace MobileApplication.Views
             //this process will find recipes by keyword - does not look at inventory
 
             Database db = new Database();   //create database
-            string searchInput = item.Text; //get user input from xaml entry
+            string keyword = Keyword.Text; //get user input from xaml entry
+            string[] antiKeywords = AntiKeywords.Text.Split(',');   //get antikeywords and split them at the commas
+            bool balanced = BalancedCheck.IsChecked;
+            bool highProtein = HighProteinCheck.IsChecked;
+            bool lowFat = LowFatCheck.IsChecked;
+            bool lowCarb = LowCarbCheck.IsChecked;
+            bool lowSodium = LowSodiumCheck.IsChecked;
 
-            recipes = db.GetRecipes(searchInput);  //gets list of recipe results
+            bool vegetarian = VegetarianCheck.IsChecked;
+            bool vegan = VeganCheck.IsChecked;
+            bool peanutFree = PeanutFreeCheck.IsChecked;
+            bool treenutFree = TreeNutFreeCheck.IsChecked;
+            bool alcoholFree = AlcoholFreeCheck.IsChecked;
+
+            List<DietLabels> dietLabels = new List<DietLabels>();
+            if (balanced)
+            {
+                dietLabels.Add(DietLabels.BALANCED);
+            }
+            if (highProtein)
+            {
+                dietLabels.Add(DietLabels.HIGHPROTEIN);
+            }
+            if (lowFat)
+            {
+                dietLabels.Add(DietLabels.LOWFAT);
+            }
+            if (lowCarb)
+            {
+                dietLabels.Add(DietLabels.LOWCARB);
+            }
+            if (lowSodium)
+            {
+                dietLabels.Add(DietLabels.LOWSODIUM);
+            }
+
+            List<HealthLabels> healthLabels = new List<HealthLabels>();
+            if (vegetarian)
+            {
+                healthLabels.Add(HealthLabels.VEGETARIAN);
+            }
+            if (vegan)
+            {
+                healthLabels.Add(HealthLabels.VEGAN);
+            }
+            if (peanutFree)
+            {
+                healthLabels.Add(HealthLabels.PEANUTFREE);
+            }
+            if (treenutFree)
+            {
+                healthLabels.Add(HealthLabels.TREENUTFREE);
+            }
+            if (alcoholFree)
+            {
+                healthLabels.Add(HealthLabels.ALCOHOLFREE);
+            }
+
+            recipes = db.GetRecipes(keyword, antiKeywords, dietLabels, healthLabels);  //gets list of recipe results
 
             if (recipes[0].Source == "")
             {
