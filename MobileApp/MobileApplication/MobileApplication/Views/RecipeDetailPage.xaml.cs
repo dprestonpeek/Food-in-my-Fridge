@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -70,6 +70,18 @@ namespace MobileApplication.Views
             if (await DisplayAlert(thisIng.text, "Add this item to your inventory?", "Yes", "No"))
             {
                 await Navigation.PushModalAsync(new NewItemPage(thisIng));
+            }
+        }
+
+        private async void ViewInBrowser(object sender, EventArgs e)
+        {
+            try
+            {
+                await Browser.OpenAsync(recipe.Url, BrowserLaunchMode.SystemPreferred);
+            }
+            catch (Exception ex)
+            {
+                // An unexpected error occured. No browser may be installed on the device.
             }
         }
     }

@@ -27,7 +27,15 @@ namespace MobileApplication.Views
 
             Database db = new Database();   //create database
             string keyword = Keyword.Text; //get user input from xaml entry
-            string[] antiKeywords = AntiKeywords.Text.Split(',');   //get antikeywords and split them at the commas
+            string[] antiKeywords;
+            try
+            {
+                antiKeywords = AntiKeywords.Text.Split(',');   //get antikeywords and split them at the commas
+            }
+            catch
+            {
+                antiKeywords = new string[] { AntiKeywords.Text };
+            }
             bool balanced = BalancedCheck.IsChecked;
             bool highProtein = HighProteinCheck.IsChecked;
             bool lowFat = LowFatCheck.IsChecked;

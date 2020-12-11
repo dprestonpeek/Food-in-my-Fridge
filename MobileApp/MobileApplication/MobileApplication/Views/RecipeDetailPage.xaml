@@ -35,7 +35,13 @@
                     VerticalOptions="Center" 
                     HorizontalOptions="CenterAndExpand" 
                     FontSize="18"/>
+                <Label x:Name="RecipeLink"
+                    Text="Open Recipe Link: "
+                    VerticalOptions="Center" 
+                    HorizontalOptions="CenterAndExpand" 
+                    FontSize="18"/>
 
+                <Button Text="View Recipe in Browser" Clicked="ViewInBrowser"></Button>
                 <Button x:Name="ShowIngredients" Text="Show Ingredients" Clicked="ShowIngredients_Clicked"/>
 
                 <StackLayout x:Name="LabelStack">
